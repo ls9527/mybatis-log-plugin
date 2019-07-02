@@ -10,7 +10,7 @@
 ![支付宝](https://raw.githubusercontent.com/kookob/mybatis-log-plugin/01b528df60df5cc990b87803e6c0c6ffae19f34c/src/mybatis/log/icon/alipay.png)
 ![微信](https://raw.githubusercontent.com/kookob/mybatis-log-plugin/01b528df60df5cc990b87803e6c0c6ffae19f34c/src/mybatis/log/icon/wechat.png)
 
-感谢以下人员对插件的支持
+感谢以下用户对插件的支持
 
 | 名字 | 金额 | 时间 |
 | --- | --- | --- |
