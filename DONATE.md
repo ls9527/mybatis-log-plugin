@@ -9,3 +9,11 @@
 [PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=2FQY2FH24H4LC&item_name=MyBatis+Log+Plugin&currency_code=USD&source=url "Donate via PayPal")<br/>
 ![支付宝](https://raw.githubusercontent.com/kookob/mybatis-log-plugin/01b528df60df5cc990b87803e6c0c6ffae19f34c/src/mybatis/log/icon/alipay.png)
 ![微信](https://raw.githubusercontent.com/kookob/mybatis-log-plugin/01b528df60df5cc990b87803e6c0c6ffae19f34c/src/mybatis/log/icon/wechat.png)
+
+感谢以下人员对插件的支持
+
+| 名字 | 金额 | 时间 |
+| --- | --- | --- |
+| *志超 | 50 | 2019-06-24 |
+| *昌军 | 10 | 2019-06-26 |
+| *智民 | 30 | 2019-06-30 |
