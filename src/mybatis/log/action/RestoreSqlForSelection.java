@@ -70,7 +70,7 @@ public class RestoreSqlForSelection extends AnAction {
                         }
                         parametersLine += currentLine;
                     }
-                    if(!parametersLine.endsWith("Parameters: \n") && !parametersLine.endsWith("null\n") && !parametersLine.endsWith(")\n")) {
+                    if(!parametersLine.endsWith("Parameters: \n") && !parametersLine.endsWith("null\n") && !RestoreSqlUtil.endWithAssembledTypes(parametersLine)) {
                         if(i == sqlArr.length -1) {
                             PrintUtil.println(project, "Can't restore sql from selection.", PrintUtil.getOutputAttributes(null, Color.yellow));
                             PrintUtil.println(project, StringConst.SPLIT_LINE, ConsoleViewContentType.USER_INPUT);

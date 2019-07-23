@@ -15,9 +15,12 @@ import java.util.regex.Pattern;
  */
 public class RestoreSqlUtil {
     private static Set<String> needAssembledType = new HashSet<>();
+    private static Set<String> unneedAssembledType = new HashSet<>();
     private static final String QUESTION_MARK = "?";
     private static final String REPLACE_MARK = "_o_?_b_";
-    private static final String PARAM_TYPE_REGEX = "\\(\\D{3,30}?\\),{0,1}";
+//    private static final String PARAM_TYPE_REGEX = "\\(\\D{3,30}?\\),{0,1}";
+    private static final String PARAM_TYPE_REGEX = "\\(String\\),{0,1}|\\(Timestamp\\),{0,1}|\\(Date\\),{0,1}|\\(Time\\),{0,1}|\\(LocalDate\\),{0,1}|\\(LocalTime\\),{0,1}|\\(LocalDateTime\\),{0,1}|\\(Byte\\),{0,1}|\\(Short\\),{0,1}|\\(Integer\\),{0,1}|\\(Long\\),{0,1}|\\(Float\\),{0,1}|\\(Double\\),{0,1}|\\(BigDecimal\\),{0,1}|\\(Boolean\\),{0,1}|\\(Null\\),{0,1}";
+    private static final String PARAM_TYPE_REGEX2 = "(\\(String\\))|(\\(Timestamp\\))|(\\(Date\\))|(\\(Time\\))|(\\(LocalDate\\))|(\\(LocalTime\\))|(\\(LocalDateTime\\))|(\\(Byte\\))|(\\(Short\\))|(\\(Integer\\))|(\\(Long\\))|(\\(Float\\))|(\\(Double\\))|(\\(BigDecimal\\))|(\\(Boolean\\))|(\\(Null\\))";
 
     //参数格式类型，暂列下面几种
     static {
@@ -29,12 +32,22 @@ public class RestoreSqlUtil {
         needAssembledType.add("(LocalTime)");
         needAssembledType.add("(LocalDateTime)");
     }
+    static {
+        unneedAssembledType.add("(Byte)");
+        unneedAssembledType.add("(Short)");
+        unneedAssembledType.add("(Integer)");
+        unneedAssembledType.add("(Long)");
+        unneedAssembledType.add("(Float)");
+        unneedAssembledType.add("(Double)");
+        unneedAssembledType.add("(BigDecimal)");
+        unneedAssembledType.add("(Boolean)");
+    }
 
     public static String match(String p, String str) {
         Pattern pattern = Pattern.compile(p);
         Matcher m = pattern.matcher(str);
         if (m.find()) {
-            return m.group(1);
+            return m.group(0);
         }
         return "";
     }
@@ -49,6 +62,7 @@ public class RestoreSqlUtil {
         String restoreSql = "";
         String preparingSql = "";
         String parametersSql = "";
+        String preparing = ConfigUtil.getPreparing()
         try {
             if(preparing.contains(StringConst.PREPARING)) {
                 preparingSql = preparing.split(StringConst.PREPARING)[1].trim();
@@ -85,7 +99,7 @@ public class RestoreSqlUtil {
                 for(int i=0; i<paramArray.length; ++i) {
                     paramArray[i] = StringUtils.removeStart(paramArray[i], " ");
                     parametersSql = StringUtils.replaceOnce(StringUtils.removeStart(parametersSql, " "), paramArray[i], "");
-                    String paramType = match("(\\(\\D{3,25}?\\))", parametersSql);
+                    String paramType = match(PARAM_TYPE_REGEX2, parametersSql);
                     preparingSql = StringUtils.replaceOnce(preparingSql, REPLACE_MARK, assembledParamValue(paramArray[i], paramType));
                     paramType = paramType.replace("(", "\\(").replace(")", "\\)") + ", ";
                     parametersSql = parametersSql.replaceFirst(paramType, "");
@@ -110,6 +124,20 @@ public class RestoreSqlUtil {
             paramValue = "'" + paramValue + "'";
         }
         return paramValue;
+    }
+
+    public static boolean endWithAssembledTypes(String parametersLine) {
+        for (String str : needAssembledType) {
+            if(parametersLine.endsWith(str + "\n")) {
+                return true;
+            }
+        }
+        for (String str : unneedAssembledType) {
+            if(parametersLine.endsWith(str + "\n")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

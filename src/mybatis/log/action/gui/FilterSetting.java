@@ -1,6 +1,7 @@
 package mybatis.log.action.gui;
 
-import mybatis.log.util.ConfigUtil;
+import com.intellij.ide.util.PropertiesComponent;
+import com.intellij.openapi.project.Project;
 import mybatis.log.util.StringConst;
 import org.apache.commons.lang.StringUtils;
 
@@ -18,13 +19,15 @@ public class FilterSetting extends JDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
     private JTextArea textArea;
+    private JTextField preparingTextField;
+    private JTextField parametersTextField;
 
-    public FilterSetting() {
+    public FilterSetting(Project project) {
         this.setTitle("Filter Setting"); //设置标题
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
-        buttonOK.addActionListener(e -> onOK());
+        buttonOK.addActionListener(e -> onOK(project));
         buttonCancel.addActionListener(e -> onCancel());
 
         // call onCancel() when cross is clicked
@@ -39,13 +42,24 @@ public class FilterSetting extends JDialog {
         contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    private void onOK() {
+    private void onOK(Project project) {
+        final PropertiesComponent component = PropertiesComponent.getInstance(project);
         //保存配置字符
         if(textArea != null && StringUtils.isNotBlank(textArea.getText())) {
             String[] filters = textArea.getText().split("\n");
-            ConfigUtil.properties.setValues(StringConst.FILTER_KEY, filters);
+            component.setValues(StringConst.FILTER_KEY, filters);
         } else {
-            ConfigUtil.properties.setValues(StringConst.FILTER_KEY, null);
+            component.setValues(StringConst.FILTER_KEY, null);
+        }
+        if(preparingTextField == null || StringUtils.isBlank(preparingTextField.getText())) {
+            component.setValue(StringConst.PREPARING_KEY, StringConst.PREPARING);
+        } else {
+            component.setValue(StringConst.PREPARING_KEY, preparingTextField.getText().trim());
+        }
+        if(parametersTextField == null || StringUtils.isBlank(parametersTextField.getText())) {
+            component.setValue(StringConst.PARAMETERS_KEY, StringConst.PARAMETERS);
+        } else {
+            component.setValue(StringConst.PARAMETERS_KEY, parametersTextField.getText().trim());
         }
         this.setVisible(false);
     }
@@ -63,8 +77,24 @@ public class FilterSetting extends JDialog {
         this.textArea = textArea;
     }
 
+    public JTextField getPreparingTextField() {
+        return preparingTextField;
+    }
+
+    public void setPreparingTextField(JTextField preparingTextField) {
+        this.preparingTextField = preparingTextField;
+    }
+
+    public JTextField getParametersTextField() {
+        return parametersTextField;
+    }
+
+    public void setParametersTextField(JTextField parametersTextField) {
+        this.parametersTextField = parametersTextField;
+    }
+
     public static void main(String[] args) {
-        FilterSetting dialog = new FilterSetting();
+        FilterSetting dialog = new FilterSetting(null);
         dialog.pack();
         dialog.setSize(600, 320);
         dialog.setLocationRelativeTo(null);
