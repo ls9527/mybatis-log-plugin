@@ -10,7 +10,6 @@ import com.intellij.openapi.editor.CaretModel;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindowManager;
 import mybatis.log.Icons;
-import mybatis.log.hibernate.StringHelper;
 import mybatis.log.tail.TailRunExecutor;
 import mybatis.log.util.ConfigUtil;
 import mybatis.log.util.PrintUtil;
@@ -61,7 +60,7 @@ public class RestoreSqlForSelection extends AnAction {
                     } else {
                         currentLine += "\n";
                     }
-                    if(StringHelper.isEmpty(preparingLine)) {
+                    if(StringUtils.isEmpty(preparingLine)) {
                         continue;
                     }
                     if(currentLine.contains(PARAMETERS)) {
@@ -83,7 +82,7 @@ public class RestoreSqlForSelection extends AnAction {
                     } else {
                         isEnd = true;
                     }
-                    if(StringHelper.isNotEmpty(preparingLine) && StringHelper.isNotEmpty(parametersLine) && isEnd) {
+                    if(StringUtils.isNotEmpty(preparingLine) && StringUtils.isNotEmpty(parametersLine) && isEnd) {
                         int indexNum = ConfigUtil.getIndexNum(project);
                         String preStr = indexNum + "  restore sql from selection  - ==>";
                         ConfigUtil.setIndexNum(project, ++indexNum);
