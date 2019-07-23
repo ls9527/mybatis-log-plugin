@@ -2,6 +2,7 @@ package mybatis.log.action.gui;
 
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.project.Project;
+import mybatis.log.util.ConfigUtil;
 import mybatis.log.util.StringConst;
 import org.apache.commons.lang.StringUtils;
 
@@ -24,6 +25,14 @@ public class FilterSetting extends JDialog {
 
     public FilterSetting(Project project) {
         this.setTitle("Filter Setting"); //设置标题
+
+        String[] filters = PropertiesComponent.getInstance(project).getValues(StringConst.FILTER_KEY);//读取过滤字符
+        if (filters != null && filters.length > 0) {
+            this.textArea.setText(StringUtils.join(filters, "\n"));
+        }
+        this.preparingTextField.setText(ConfigUtil.getPreparing(project));
+        this.parametersTextField.setText(ConfigUtil.getParameters(project));
+
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -51,54 +60,26 @@ public class FilterSetting extends JDialog {
         } else {
             component.setValues(StringConst.FILTER_KEY, null);
         }
-        if(preparingTextField == null || StringUtils.isBlank(preparingTextField.getText())) {
-            component.setValue(StringConst.PREPARING_KEY, StringConst.PREPARING);
-        } else {
-            component.setValue(StringConst.PREPARING_KEY, preparingTextField.getText().trim());
+        String preparingText = StringConst.PREPARING;
+        String parametersText = StringConst.PARAMETERS;
+        if(StringUtils.isNotBlank(preparingTextField.getText())) {
+            preparingText = preparingTextField.getText().trim();
+            if(!StringUtils.endsWith(preparingText, ":")) {
+                preparingText += ":";
+            }
         }
-        if(parametersTextField == null || StringUtils.isBlank(parametersTextField.getText())) {
-            component.setValue(StringConst.PARAMETERS_KEY, StringConst.PARAMETERS);
-        } else {
-            component.setValue(StringConst.PARAMETERS_KEY, parametersTextField.getText().trim());
+        if(StringUtils.isNotBlank(parametersTextField.getText())) {
+            parametersText = parametersTextField.getText().trim();
+            if(!StringUtils.endsWith(parametersText, ":")) {
+                parametersText += ":";
+            }
         }
+        ConfigUtil.setPreparing(project, preparingText);
+        ConfigUtil.setParameters(project, parametersText);
         this.setVisible(false);
     }
 
     private void onCancel() {
-        // add your code here if necessary
         this.setVisible(false);
-    }
-
-    public JTextArea getTextArea() {
-        return textArea;
-    }
-
-    public void setTextArea(JTextArea textArea) {
-        this.textArea = textArea;
-    }
-
-    public JTextField getPreparingTextField() {
-        return preparingTextField;
-    }
-
-    public void setPreparingTextField(JTextField preparingTextField) {
-        this.preparingTextField = preparingTextField;
-    }
-
-    public JTextField getParametersTextField() {
-        return parametersTextField;
-    }
-
-    public void setParametersTextField(JTextField parametersTextField) {
-        this.parametersTextField = parametersTextField;
-    }
-
-    public static void main(String[] args) {
-        FilterSetting dialog = new FilterSetting(null);
-        dialog.pack();
-        dialog.setSize(600, 320);
-        dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
-        System.exit(0);
     }
 }
