@@ -1,5 +1,6 @@
 package mybatis.log.util;
 
+import com.intellij.openapi.project.Project;
 import mybatis.log.hibernate.BasicFormatterImpl;
 import org.apache.commons.lang.StringUtils;
 import mybatis.log.hibernate.Formatter;
@@ -54,33 +55,32 @@ public class RestoreSqlUtil {
 
     /**
      * Sql语句还原，整个插件的核心就是该方法
-     * @param preparing
-     * @param parameters
+     * @param preparingLine
+     * @param parametersLine
      * @return
      */
-    public static String restoreSql(final String preparing, final String parameters) {
+    public static String restoreSql(Project project, final String preparingLine, final String parametersLine) {
         String restoreSql = "";
         String preparingSql = "";
         String parametersSql = "";
-        String preparing = ConfigUtil.getPreparing()
+        final String PREPARING = ConfigUtil.getPreparing(project);
+        final String PARAMETERS = ConfigUtil.getParameters(project);
         try {
-            if(preparing.contains(StringConst.PREPARING)) {
-                preparingSql = preparing.split(StringConst.PREPARING)[1].trim();
-            } else if(preparing.contains(StringConst.EXECUTING)) {
-                preparingSql = preparing.split(StringConst.EXECUTING)[1].trim();
+            if(preparingLine.contains(PREPARING)) {
+                preparingSql = preparingLine.split(PREPARING)[1].trim();
             } else {
-                preparingSql = preparing;
+                preparingSql = preparingLine;
             }
             boolean hasParam = false;
-            if(parameters.contains(StringConst.PARAMETERS)) {
-                if(parameters.split(StringConst.PARAMETERS).length > 1) {
-                    parametersSql = parameters.split(StringConst.PARAMETERS)[1];
+            if(parametersLine.contains(PARAMETERS)) {
+                if(parametersLine.split(PARAMETERS).length > 1) {
+                    parametersSql = parametersLine.split(PARAMETERS)[1];
                     if(StringUtils.isNotBlank(parametersSql)) {
                         hasParam = true;
                     }
                 }
             } else {
-                parametersSql = parameters;
+                parametersSql = parametersLine;
             }
             if(hasParam) {
                 preparingSql = StringUtils.replace(preparingSql, QUESTION_MARK, REPLACE_MARK);
@@ -163,7 +163,7 @@ public class RestoreSqlUtil {
     public static void main(String[] args) {
         String sql = "2017-06-23 14:31:27.729 ERROR notParamTest - ==>  Preparing: INSERT INTO t_ml_vop_bil_interface (a,b,c) VALUES (?,?,?)\n";
         String param = "2017-06-23 14:31:27.729 ERROR notParamTest - ==>  Parameters: 996aep(String), {succ,?,ess=1}(String), 2017-06-29(Timestamp)\n";
-        String restoreSql = restoreSql(sql, param);
+        String restoreSql = restoreSql(null, sql, param);
         Formatter formatter = new BasicFormatterImpl();
         String result = formatter.format(restoreSql);
         System.out.println(restoreSql);
