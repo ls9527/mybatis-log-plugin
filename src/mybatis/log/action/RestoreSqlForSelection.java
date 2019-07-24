@@ -1,7 +1,6 @@
 package mybatis.log.action;
 
 import com.intellij.execution.ui.ConsoleViewContentType;
-import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.LangDataKeys;
@@ -39,7 +38,7 @@ public class RestoreSqlForSelection extends AnAction {
         CaretModel caretModel = e.getData(LangDataKeys.EDITOR).getCaretModel();
         Caret currentCaret = caretModel.getCurrentCaret();
         String sqlText = currentCaret.getSelectedText();
-        if(PropertiesComponent.getInstance(project) == null || ConfigUtil.getRunning(project) == false) {
+        if(!ConfigUtil.active) {
             new ShowLogInConsoleAction(project).showLogInConsole(project);
         }
         //激活Restore Sql tab
