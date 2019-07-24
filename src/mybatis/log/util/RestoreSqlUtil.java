@@ -92,7 +92,11 @@ public class RestoreSqlUtil {
                     if(questionMarkCount <= paramArray.length || parametersSql.indexOf("null") == -1) {
                         break;
                     } else {
-                        parametersSql = parametersSql.replaceFirst("null,", "null(Null),");//这个一定要用null,(带逗号)，否则多个null值分割会出错
+                        if(parametersSql.contains(", null,")) {
+                            parametersSql = parametersSql.replaceFirst(", null,", ", null(Null),");//这个一定要用null,(带逗号)，否则多个null值分割会出错
+                        } else {
+                            parametersSql = parametersSql.replaceFirst("null,", "null(Null),");//这个一定要用null,(带逗号)，否则多个null值分割会出错
+                        }
                     }
                     paramArray = parametersSql.split(PARAM_TYPE_REGEX);
                 }
