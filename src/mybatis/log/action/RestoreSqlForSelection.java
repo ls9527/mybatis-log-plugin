@@ -9,7 +9,6 @@ import com.intellij.openapi.editor.CaretModel;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindowManager;
 import mybatis.log.Icons;
-import mybatis.log.hibernate.StringHelper;
 import mybatis.log.tail.TailRunExecutor;
 import mybatis.log.util.ConfigUtil;
 import mybatis.log.util.PrintUtil;
@@ -36,16 +35,17 @@ public class RestoreSqlForSelection extends AnAction {
     public void actionPerformed(AnActionEvent e) {
         final Project project = e.getProject();
         if (project == null) return;
-        final String projectBasePath = project.getBasePath();
         CaretModel caretModel = e.getData(LangDataKeys.EDITOR).getCaretModel();
         Caret currentCaret = caretModel.getCurrentCaret();
         String sqlText = currentCaret.getSelectedText();
-        if(ConfigUtil.runningMap.get(projectBasePath) == null || ConfigUtil.runningMap.get(projectBasePath) == false) {
+        if(!ConfigUtil.active) {
             new ShowLogInConsoleAction(project).showLogInConsole(project);
         }
         //激活Restore Sql tab
         ToolWindowManager.getInstance(project).getToolWindow(TailRunExecutor.TOOLWINDOWS_ID).activate(null);
-        if(StringUtils.isNotBlank(sqlText) && sqlText.contains(StringConst.PARAMETERS) && (sqlText.contains(StringConst.PREPARING) || sqlText.contains(StringConst.EXECUTING))) {
+        final String PREPARING = ConfigUtil.getPreparing(project);
+        final String PARAMETERS = ConfigUtil.getParameters(project);
+        if(StringUtils.isNotBlank(sqlText) && sqlText.contains(PREPARING) && sqlText.contains(PARAMETERS)) {
             String[] sqlArr = sqlText.split("\n");
             if(sqlArr != null && sqlArr.length >= 2) {
                 for(int i=0; i<sqlArr.length; ++i) {
@@ -53,16 +53,16 @@ public class RestoreSqlForSelection extends AnAction {
                     if(StringUtils.isBlank(currentLine)) {
                         continue;
                     }
-                    if(currentLine.contains(StringConst.PREPARING) || currentLine.contains(StringConst.EXECUTING)) {
+                    if(currentLine.contains(PREPARING)) {
                         preparingLine = currentLine;
                         continue;
                     } else {
                         currentLine += "\n";
                     }
-                    if(StringHelper.isEmpty(preparingLine)) {
+                    if(StringUtils.isEmpty(preparingLine)) {
                         continue;
                     }
-                    if(currentLine.contains(StringConst.PARAMETERS)) {
+                    if(currentLine.contains(PARAMETERS)) {
                         parametersLine = currentLine;
                     } else {
                         if(StringUtils.isBlank(parametersLine)) {
@@ -70,7 +70,7 @@ public class RestoreSqlForSelection extends AnAction {
                         }
                         parametersLine += currentLine;
                     }
-                    if(!parametersLine.endsWith("Parameters: \n") && !parametersLine.endsWith("null\n") && !parametersLine.endsWith(")\n")) {
+                    if(!parametersLine.endsWith("Parameters: \n") && !parametersLine.endsWith("null\n") && !RestoreSqlUtil.endWithAssembledTypes(parametersLine)) {
                         if(i == sqlArr.length -1) {
                             PrintUtil.println(project, "Can't restore sql from selection.", PrintUtil.getOutputAttributes(null, Color.yellow));
                             PrintUtil.println(project, StringConst.SPLIT_LINE, ConsoleViewContentType.USER_INPUT);
@@ -81,13 +81,13 @@ public class RestoreSqlForSelection extends AnAction {
                     } else {
                         isEnd = true;
                     }
-                    if(StringHelper.isNotEmpty(preparingLine) && StringHelper.isNotEmpty(parametersLine) && isEnd) {
-                        int indexNum = ConfigUtil.indexNumMap.get(projectBasePath);
+                    if(StringUtils.isNotEmpty(preparingLine) && StringUtils.isNotEmpty(parametersLine) && isEnd) {
+                        int indexNum = ConfigUtil.getIndexNum(project);
                         String preStr = indexNum + "  restore sql from selection  - ==>";
-                        ConfigUtil.indexNumMap.put(projectBasePath, ++indexNum);
+                        ConfigUtil.setIndexNum(project, ++indexNum);
                         PrintUtil.println(project, preStr, ConsoleViewContentType.USER_INPUT);
-                        String restoreSql = RestoreSqlUtil.restoreSql(preparingLine, parametersLine);
-                        if(ConfigUtil.sqlFormatMap.get(projectBasePath)) {
+                        String restoreSql = RestoreSqlUtil.restoreSql(project, preparingLine, parametersLine);
+                        if(ConfigUtil.getSqlFormat(project)) {
                             restoreSql = PrintUtil.format(restoreSql);
                         }
                         PrintUtil.println(project, restoreSql, PrintUtil.getOutputAttributes(null, new Color(255,200,0)));//高亮显示
