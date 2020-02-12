@@ -6,16 +6,4 @@
 ![支付宝](https://raw.githubusercontent.com/kookob/mybatis-log-plugin/01b528df60df5cc990b87803e6c0c6ffae19f34c/src/mybatis/log/icon/alipay.png)
 ![微信](https://raw.githubusercontent.com/kookob/mybatis-log-plugin/01b528df60df5cc990b87803e6c0c6ffae19f34c/src/mybatis/log/icon/wechat.png)
 
-特别感谢以下用户对插件的支持  
-因为微信收款，不能获取到付款人的相关信息，下面列表用“微信好友”展示  
-
-| 名字 | 金额 | 时间 | 来源 |
-| --- | --- | --- | --- |
-| *志超 | 50 | 2019-06-24 | 支付宝 |
-| *昌军 | 10 | 2019-06-26 | 支付宝 |
-| *智民 | 30 | 2019-06-30 | 支付宝 |
-| *跃 | 1 | 2019-07-09 | 支付宝 |
-| 微信好友 | 5 | 2019-07-09 | 微信 |
-| *晓钱 | 10 | 2019-07-10 | 支付宝 |
-| *枫友 | 2 | 2019-07-17 | 支付宝 |
-| *伟光 | 1 | 2019-07-23 | 支付宝 |
+**[捐赠列表](https://github.com/kookob/mybatis-log-plugin/wiki/%E6%8D%90%E8%B5%A0%E5%88%97%E8%A1%A8)**
