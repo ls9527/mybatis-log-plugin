@@ -7,6 +7,7 @@ import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.editor.Caret;
 import com.intellij.openapi.editor.CaretModel;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
 import mybatis.log.Icons;
 import mybatis.log.tail.TailRunExecutor;
@@ -38,11 +39,12 @@ public class RestoreSqlForSelection extends AnAction {
         CaretModel caretModel = e.getData(LangDataKeys.EDITOR).getCaretModel();
         Caret currentCaret = caretModel.getCurrentCaret();
         String sqlText = currentCaret.getSelectedText();
-        if(!ConfigUtil.active) {
+        ToolWindow toolWindow = ToolWindowManager.getInstance(project).getToolWindow(TailRunExecutor.TOOLWINDOWS_ID);
+        if(!ConfigUtil.active || !toolWindow.isAvailable()) {
             new ShowLogInConsoleAction(project).showLogInConsole(project);
         }
         //激活Restore Sql tab
-        ToolWindowManager.getInstance(project).getToolWindow(TailRunExecutor.TOOLWINDOWS_ID).activate(null);
+        toolWindow.activate(null);
         final String PREPARING = ConfigUtil.getPreparing(project);
         final String PARAMETERS = ConfigUtil.getParameters(project);
         if(StringUtils.isNotBlank(sqlText) && sqlText.contains(PREPARING) && sqlText.contains(PARAMETERS)) {
