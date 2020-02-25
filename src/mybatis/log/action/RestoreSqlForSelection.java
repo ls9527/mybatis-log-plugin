@@ -85,7 +85,7 @@ public class RestoreSqlForSelection extends AnAction {
                     }
                     if(StringUtils.isNotEmpty(preparingLine) && StringUtils.isNotEmpty(parametersLine) && isEnd) {
                         int indexNum = ConfigUtil.getIndexNum(project);
-                        String preStr = indexNum + "  restore sql from selection  - ==>";
+                        String preStr = "--  " + indexNum + "  restore sql from selection  - ==>";
                         ConfigUtil.setIndexNum(project, ++indexNum);
                         PrintUtil.println(project, preStr, ConsoleViewContentType.USER_INPUT);
                         String restoreSql = RestoreSqlUtil.restoreSql(project, preparingLine, parametersLine);
