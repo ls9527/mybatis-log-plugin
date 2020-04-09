@@ -3,13 +3,19 @@ package mybatis.log;
 import com.intellij.execution.filters.Filter;
 import com.intellij.execution.ui.ConsoleViewContentType;
 import com.intellij.ide.util.PropertiesComponent;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.wm.ToolWindowManager;
+import mybatis.log.action.MybatisLogProjectService;
+import mybatis.log.action.gui.MySqlForm;
 import mybatis.log.util.ConfigUtil;
 import mybatis.log.util.PrintUtil;
 import mybatis.log.util.RestoreSqlUtil;
 import mybatis.log.util.StringConst;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
+
+import javax.swing.*;
 
 /**
  * 语句过滤器
@@ -63,6 +69,20 @@ public class MyBatisLogFilter implements Filter {
                 }
                 PrintUtil.println(project, restoreSql);
                 PrintUtil.println(project, StringConst.SPLIT_LINE, ConsoleViewContentType.USER_INPUT);
+                JComponent mybatisLogToolWindow =
+                        ToolWindowManager.getInstance(project).getToolWindow("MybatisLogToolWindow").getContentManager().getComponent();
+                JPanel theSqlPanel = MybatisLogProjectService.getInstance(project).getTheSqlPanel();
+//                if (mybatisLogToolWindow instanceof JPanel) {
+                    String finalRestoreSql = restoreSql;
+                    ApplicationManager.getApplication().invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            MySqlForm mySqlForm = new MySqlForm(project, finalRestoreSql);
+                            theSqlPanel.add(mySqlForm.getThePanel());
+                            theSqlPanel.repaint();
+                        }
+                    });
+//                }
                 preparingLine = "";
                 parametersLine = "";
                 isEnd = false;

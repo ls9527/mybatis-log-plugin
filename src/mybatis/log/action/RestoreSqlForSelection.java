@@ -29,7 +29,7 @@ public class RestoreSqlForSelection extends AnAction {
     private static boolean isEnd = false;
 
     public RestoreSqlForSelection(){
-        super(null,null, Icons.MyBatisIcon);
+        super(Icons.MyBatisIcon);
     }
 
     @Override

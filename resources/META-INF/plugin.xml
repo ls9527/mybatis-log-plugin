@@ -3,7 +3,6 @@
     <name>MyBatis Log Plugin</name>
     <version>2.1.1</version>
     <vendor email="kookob@gmail.com" url="">ob</vendor>
-
     <description>
     <![CDATA[
       MyBatis Log Plugin
@@ -45,19 +44,21 @@
     </change-notes>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="141.0"/>
-
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
-    <!-- uncomment to enable plugin in all products
+    <!-- uncomment to enable plugin in all products-->
     <depends>com.intellij.modules.lang</depends>
-    -->
+    <!--    <depends>com.intellij.modules.java</depends>-->
+    <depends>com.intellij.database</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
         <consoleFilterProvider implementation="mybatis.log.MyBatisLogProvider"/>
         <executor implementation="mybatis.log.tail.TailRunExecutor" id="MyBatisLogTail"/>
         <postStartupActivity implementation="mybatis.log.MyBatisLogStartupActivity"/>
+        <toolWindow id="MybatisLogToolWindow" secondary="true" anchor="right"
+                    factoryClass="mybatis.log.action.MybatisLogToolWindow"/>
+        <projectService serviceImplementation="mybatis.log.action.MybatisLogProjectService"/>
     </extensions>
 
     <actions>

@@ -43,11 +43,12 @@ public class PrintUtil {
         if (StringUtils.isNotBlank(line)) {
             String lowerLine = line.toLowerCase().trim();
             if (lowerLine.startsWith("insert") || lowerLine.startsWith("update")) {
-                println(project, line, ConsoleViewContentType.SYSTEM_OUTPUT);
+//                println(project, line, ConsoleViewContentType.SYSTEM_OUTPUT);
+                println(project, line, ConsoleViewContentType.USER_INPUT);
             } else if (lowerLine.startsWith("delete")) {
-                println(project, line, getOutputAttributes(Color.RED, null));
+                println(project, line, ConsoleViewContentType.USER_INPUT);
             } else {
-                println(project, line, ConsoleViewContentType.ERROR_OUTPUT);
+                println(project, line, ConsoleViewContentType.USER_INPUT);
             }
         }
     }

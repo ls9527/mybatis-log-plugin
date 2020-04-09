@@ -6,9 +6,8 @@ import com.intellij.execution.ExecutionManager;
 import com.intellij.execution.Executor;
 import com.intellij.execution.configurations.RunProfile;
 import com.intellij.execution.configurations.RunProfileState;
+import com.intellij.execution.console.LanguageConsoleImpl;
 import com.intellij.execution.filters.Filter;
-import com.intellij.execution.filters.TextConsoleBuilder;
-import com.intellij.execution.filters.TextConsoleBuilderFactory;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.execution.ui.ConsoleView;
 import com.intellij.execution.ui.RunContentDescriptor;
@@ -31,7 +30,11 @@ import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Computable;
 import com.intellij.openapi.util.Disposer;
+import com.intellij.openapi.vfs.LocalFileSystem;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.openapi.wm.ToolWindowManager;
+import com.intellij.sql.psi.SqlLanguage;
 import com.intellij.ui.content.Content;
 import mybatis.log.Icons;
 import mybatis.log.util.ConfigUtil;
@@ -40,8 +43,11 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Copy of com.intellij.execution.RunContentExecutor Runs a process and prints the output in a content tab within the
@@ -105,10 +111,19 @@ public class TailContentExecutor implements Disposable {
     }
 
     private ConsoleView createConsole(@NotNull Project project) {
-        TextConsoleBuilder consoleBuilder = TextConsoleBuilderFactory.getInstance().createBuilder(project);
-        consoleBuilder.filters(myFilterList);
-        ConsoleView console = consoleBuilder.getConsole();
-        return console;
+//        TextConsoleBuilder consoleBuilder = TextConsoleBuilderFactory.getInstance().createBuilder(project);
+//        consoleBuilder.filters(myFilterList);
+//        ConsoleView console = consoleBuilder.getConsole();
+        try {
+            File tempFile = File.createTempFile(UUID.randomUUID().toString(), ".sql");
+            VirtualFile virtualFile = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(tempFile);
+            LanguageConsoleImpl mybatisLogSql = new LanguageConsoleImpl(project, "MybatisLogSql", virtualFile);
+            return mybatisLogSql;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
 
     public void run() {
