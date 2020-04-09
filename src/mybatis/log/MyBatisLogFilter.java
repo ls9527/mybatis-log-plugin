@@ -70,11 +70,12 @@ public class MyBatisLogFilter implements Filter {
                 PrintUtil.println(project, StringConst.SPLIT_LINE, ConsoleViewContentType.USER_INPUT);
                 JPanel theSqlPanel = MybatisLogProjectService.getInstance(project).getTheSqlPanel();
 //                if (mybatisLogToolWindow instanceof JPanel) {
-                String finalRestoreSql = "# " + preStr + "\n" + restoreSql;
+                String comment = preStr;
+                String finalRestoreSql = restoreSql;
                     ApplicationManager.getApplication().invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                            MySqlForm mySqlForm = new MySqlForm(project, finalRestoreSql);
+                            MySqlForm mySqlForm = new MySqlForm(project, comment,finalRestoreSql);
                             theSqlPanel.add(mySqlForm.getThePanel());
                             theSqlPanel.repaint();
                         }

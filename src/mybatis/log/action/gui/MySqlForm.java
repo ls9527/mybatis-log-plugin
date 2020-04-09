@@ -25,11 +25,13 @@ public class MySqlForm {
     private JPanel toolbarPanel;
     private PsiFile myPsiFile;
     private Project myProject;
+    private String comment;
     private String theSqlText;
     private Document myDocument;
 
-    public MySqlForm(Project project, String text) {
+    public MySqlForm(Project project, String comment, String text) {
         myProject = project;
+        this.comment = comment;
         theSqlText = text;
         this.$$$setupUI$$$();
     }
@@ -43,7 +45,8 @@ public class MySqlForm {
     }
 
     private void createUIComponents() {
-        PsiFile fileFromText = PsiFileFactory.getInstance(myProject).createFileFromText("mybatis.sql", SqlLanguage.INSTANCE, theSqlText);
+        String finalSqlText = "# " + comment + "\n" + theSqlText;
+        PsiFile fileFromText = PsiFileFactory.getInstance(myProject).createFileFromText("mybatis.sql", SqlLanguage.INSTANCE, finalSqlText);
         myPsiFile = fileFromText;
         Document document = PsiDocumentManager.getInstance(myProject).getDocument(fileFromText);
         myDocument = document;
@@ -93,4 +96,5 @@ public class MySqlForm {
     public JComponent $$$getRootComponent$$$() {
         return thePanel;
     }
+
 }
