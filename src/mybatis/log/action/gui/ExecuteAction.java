@@ -12,7 +12,7 @@ public class ExecuteAction extends AnAction {
     private MySqlForm theForm;
 
     public ExecuteAction(MySqlForm mySqlForm) {
-        super(AllIcons.Actions.Execute);
+        super("Execute","Execute sql",AllIcons.Actions.Execute);
         theForm = mySqlForm;
     }
 

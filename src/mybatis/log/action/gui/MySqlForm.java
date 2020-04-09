@@ -1,8 +1,14 @@
 package mybatis.log.action.gui;
 
+import com.google.common.collect.Lists;
+import com.intellij.ide.CopyProvider;
+import com.intellij.ide.DataManager;
+import com.intellij.ide.TextCopyProvider;
+import com.intellij.ide.actions.CopyAction;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionToolbar;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.project.Project;
@@ -12,9 +18,11 @@ import com.intellij.psi.PsiFileFactory;
 import com.intellij.sql.SqlFileType;
 import com.intellij.sql.psi.SqlLanguage;
 import com.intellij.ui.EditorTextField;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collection;
 
 /**
  * @author bruce ge
@@ -65,8 +73,10 @@ public class MySqlForm {
         toolbarPanel.setLayout(new BorderLayout());
         DefaultActionGroup actionResultGroup = new DefaultActionGroup("MybatisCodeHelper.MybatisLogOneGroup", true);
         actionResultGroup.add(new ExecuteAction(this));
-        ActionToolbar actionToolBar = ActionManager.getInstance().createActionToolbar("MybatisRunnerActions", actionResultGroup, true);
+        actionResultGroup.add(new MyCopyAction(theSqlText));
 
+        ActionToolbar actionToolBar = ActionManager.getInstance().createActionToolbar("MybatisRunnerActions", actionResultGroup, true);
+        actionToolBar.setTargetComponent(myEditorTextField);
         actionToolBar.setLayoutPolicy(ActionToolbar.AUTO_LAYOUT_POLICY);
         JComponent actionToolBarComponent = actionToolBar.getComponent();
         actionToolBarComponent.setBorder(null);
