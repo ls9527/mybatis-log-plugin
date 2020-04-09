@@ -18,7 +18,7 @@ import java.util.StringTokenizer;
  * @author Gavin King
  * @author Steve Ebersole
  */
-public class BasicFormatterImpl implements Formatter {
+public class BasicFormatterImpl {
 
     private static final Set<String> BEGIN_CLAUSES = new HashSet<>();
     private static final Set<String> END_CLAUSES = new HashSet<>();
@@ -69,7 +69,6 @@ public class BasicFormatterImpl implements Formatter {
     private static final String INDENT_STRING = "    ";
     private static final String INITIAL = "\n    ";
 
-    @Override
     public String format(String source) {
         return new FormatProcess( source ).perform();
     }

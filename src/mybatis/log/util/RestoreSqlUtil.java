@@ -3,7 +3,6 @@ package mybatis.log.util;
 import com.intellij.openapi.project.Project;
 import mybatis.log.hibernate.BasicFormatterImpl;
 import org.apache.commons.lang.StringUtils;
-import mybatis.log.hibernate.Formatter;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -168,7 +167,7 @@ public class RestoreSqlUtil {
         String sql = "2017-06-23 14:31:27.729 ERROR notParamTest - ==>  Preparing: INSERT INTO t_ml_vop_bil_interface (a,b,c) VALUES (?,?,?)\n";
         String param = "2017-06-23 14:31:27.729 ERROR notParamTest - ==>  Parameters: 996aep(String), {succ,?,ess=1}(String), 2017-06-29(Timestamp)\n";
         String restoreSql = restoreSql(null, sql, param);
-        Formatter formatter = new BasicFormatterImpl();
+        BasicFormatterImpl formatter = new BasicFormatterImpl();
         String result = formatter.format(restoreSql);
         System.out.println(restoreSql);
         System.out.println("----------------------");

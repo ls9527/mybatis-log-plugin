@@ -6,7 +6,6 @@ import com.intellij.openapi.editor.markup.TextAttributes;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.ui.UIUtil;
 import mybatis.log.hibernate.BasicFormatterImpl;
-import mybatis.log.hibernate.Formatter;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -59,7 +58,7 @@ public class PrintUtil {
      * @return
      */
     public static String format(String sql) {
-        Formatter formatter = new BasicFormatterImpl();
+        BasicFormatterImpl formatter = new BasicFormatterImpl();
         return formatter.format(sql);
     }
 }
