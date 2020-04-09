@@ -20,6 +20,7 @@ public class MyListForm {
     private final Project myProject;
     private JPanel panel1;
     private JPanel thePanel;
+    private JPanel toolbarPanel;
 
 
     public MyListForm(Project project) {
@@ -39,7 +40,7 @@ public class MyListForm {
         thePanel = new JPanel();
         thePanel.setLayout(new VerticalFlowLayout());
         JPanel toolbarPanel = createToolbarPanel(thePanel);
-        thePanel.add(toolbarPanel);
+        this.toolbarPanel = toolbarPanel;
     }
 
     @NotNull
@@ -68,10 +69,11 @@ public class MyListForm {
     private void $$$setupUI$$$() {
         createUIComponents();
         panel1 = new JPanel();
-        panel1.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        panel1.setLayout(new BorderLayout(0, 0));
         final JScrollPane scrollPane1 = new JScrollPane();
-        panel1.add(scrollPane1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panel1.add(scrollPane1, BorderLayout.CENTER);
         scrollPane1.setViewportView(thePanel);
+        panel1.add(toolbarPanel, BorderLayout.NORTH);
     }
 
     /**

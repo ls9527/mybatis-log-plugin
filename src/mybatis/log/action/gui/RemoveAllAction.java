@@ -23,7 +23,7 @@ public class RemoveAllAction extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent anActionEvent) {
         this.myListForm.removeAll();
-        this.myListForm.add(MyListForm.createToolbarPanel(myListForm));
+//        this.myListForm.add(MyListForm.createToolbarPanel(myListForm));
         myListForm.revalidate();
         this.myListForm.repaint();
         MybatisLogProjectService.getInstance(anActionEvent.getProject()).setSqlList(Sets.newHashSet());
