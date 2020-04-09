@@ -7,7 +7,7 @@ import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import mybatis.log.Icons;
-import mybatis.log.action.gui.ListForm;
+import mybatis.log.action.gui.MyListForm;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -22,7 +22,7 @@ public class MybatisLogToolWindow implements ToolWindowFactory, DumbAware {
 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
-        myToolWindowContent = new ListForm(project).getThePanel();
+        myToolWindowContent = new MyListForm(project).getThePanel();
         myToolWindow = toolWindow;
         ContentFactory instance = ContentFactory.SERVICE.getInstance();
         Content content = instance.createContent(myToolWindowContent, "", false);

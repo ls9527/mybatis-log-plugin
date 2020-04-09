@@ -3,10 +3,10 @@ package mybatis.log.action;
 
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
-import org.jetbrains.annotations.NotNull;
+import org.fest.util.Sets;
 
 import javax.swing.*;
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author bruce ge
@@ -14,7 +14,8 @@ import java.util.List;
 public class MybatisLogProjectService {
     private Project myProject;
 
-    private List<String> sqlList;
+    private Set<String> sqlList = Sets.newHashSet();
+
 
     public Project getMyProject() {
         return myProject;
@@ -35,11 +36,11 @@ public class MybatisLogProjectService {
         this.myProject = myProject;
     }
 
-    public List<String> getSqlList() {
+    public Set<String> getSqlList() {
         return sqlList;
     }
 
-    public void setSqlList(List<String> sqlList) {
+    public void setSqlList(Set<String> sqlList) {
         this.sqlList = sqlList;
     }
 

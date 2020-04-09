@@ -63,7 +63,7 @@ public class MySqlForm {
 
         toolbarPanel = new JPanel();
         toolbarPanel.setLayout(new BorderLayout());
-        DefaultActionGroup actionResultGroup = new DefaultActionGroup("MybatisCodeHelper.MybatisRunner", true);
+        DefaultActionGroup actionResultGroup = new DefaultActionGroup("MybatisCodeHelper.MybatisLogOneGroup", true);
         actionResultGroup.add(new ExecuteAction(this));
         ActionToolbar actionToolBar = ActionManager.getInstance().createActionToolbar("MybatisRunnerActions", actionResultGroup, true);
 

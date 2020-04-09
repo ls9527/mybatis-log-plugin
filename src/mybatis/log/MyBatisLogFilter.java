@@ -23,8 +23,6 @@ import javax.swing.*;
 public class MyBatisLogFilter implements Filter {
     private final Project project;
     private static String preparingLine = "";
-    private static String parametersLine = "";
-    private static boolean isEnd = false;
 
     public MyBatisLogFilter(Project project) {
         this.project = project;
@@ -51,39 +49,55 @@ public class MyBatisLogFilter implements Filter {
             if(StringUtils.isEmpty(preparingLine)) {
                 return null;
             }
-            parametersLine = currentLine.contains(ConfigUtil.getParameters(project)) ? currentLine : parametersLine + currentLine;
+
+
+            boolean contains = currentLine.contains(ConfigUtil.getParameters(project));
+            if (!contains) {
+                return null;
+            }
+            System.out.println("currentLine line is:" + currentLine);
+
+            String parametersLine = currentLine;
             if(!parametersLine.endsWith("Parameters: \n") && !parametersLine.endsWith("null\n") && !parametersLine.endsWith(")\n")) {
                 return null;
             } else {
-                isEnd = true;
+
             }
-            if(StringUtils.isNotEmpty(preparingLine) && StringUtils.isNotEmpty(parametersLine) && isEnd) {
+            MybatisLogProjectService instance = MybatisLogProjectService.getInstance(project);
+            if (instance.getSqlList().contains(preparingLine+currentLine)) {
+                preparingLine = "";
+                return null;
+            } else {
+                instance.getSqlList().add(preparingLine+currentLine);
+            }
+
+
+            if (StringUtils.isNotEmpty(preparingLine) && StringUtils.isNotEmpty(parametersLine)) {
                 int indexNum = ConfigUtil.getIndexNum(project);
                 String preStr = "--  " + indexNum + "  " + parametersLine.split(ConfigUtil.getParameters(project))[0].trim();//序号前缀字符串
                 ConfigUtil.setIndexNum(project, ++indexNum);
                 String restoreSql = RestoreSqlUtil.restoreSql(project, preparingLine, parametersLine);
-                PrintUtil.println(project, preStr, ConsoleViewContentType.USER_INPUT);
                 if(ConfigUtil.getSqlFormat(project)) {
                     restoreSql = PrintUtil.format(restoreSql);
                 }
-                PrintUtil.println(project, restoreSql);
-                PrintUtil.println(project, StringConst.SPLIT_LINE, ConsoleViewContentType.USER_INPUT);
-                JPanel theSqlPanel = MybatisLogProjectService.getInstance(project).getTheSqlPanel();
+
+                JPanel theSqlPanel = instance.getTheSqlPanel();
 //                if (mybatisLogToolWindow instanceof JPanel) {
                 String comment = preStr;
                 String finalRestoreSql = restoreSql;
-                    ApplicationManager.getApplication().invokeLater(new Runnable() {
+
+                ApplicationManager.getApplication().invokeLater(new Runnable() {
                         @Override
                         public void run() {
                             MySqlForm mySqlForm = new MySqlForm(project, comment,finalRestoreSql);
                             theSqlPanel.add(mySqlForm.getThePanel());
+                            theSqlPanel.revalidate();
                             theSqlPanel.repaint();
                         }
                     });
 //                }
                 preparingLine = "";
                 parametersLine = "";
-                isEnd = false;
             }
         }
         return null;
