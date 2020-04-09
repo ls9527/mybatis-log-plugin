@@ -5,7 +5,6 @@ import com.intellij.execution.ui.ConsoleViewContentType;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.wm.ToolWindowManager;
 import mybatis.log.action.MybatisLogProjectService;
 import mybatis.log.action.gui.MySqlForm;
 import mybatis.log.util.ConfigUtil;
@@ -69,11 +68,9 @@ public class MyBatisLogFilter implements Filter {
                 }
                 PrintUtil.println(project, restoreSql);
                 PrintUtil.println(project, StringConst.SPLIT_LINE, ConsoleViewContentType.USER_INPUT);
-                JComponent mybatisLogToolWindow =
-                        ToolWindowManager.getInstance(project).getToolWindow("MybatisLogToolWindow").getContentManager().getComponent();
                 JPanel theSqlPanel = MybatisLogProjectService.getInstance(project).getTheSqlPanel();
 //                if (mybatisLogToolWindow instanceof JPanel) {
-                    String finalRestoreSql = restoreSql;
+                String finalRestoreSql = "# " + preStr + "\n" + restoreSql;
                     ApplicationManager.getApplication().invokeLater(new Runnable() {
                         @Override
                         public void run() {

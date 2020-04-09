@@ -53,7 +53,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
-        <consoleFilterProvider implementation="mybatis.log.MyBatisLogProvider"/>
+        <consoleFilterProvider implementation="mybatis.log.MybatisLogProvider"/>
         <executor implementation="mybatis.log.tail.TailRunExecutor" id="MyBatisLogTail"/>
         <postStartupActivity implementation="mybatis.log.MyBatisLogStartupActivity"/>
         <toolWindow id="MybatisLogToolWindow" secondary="true" anchor="right"
