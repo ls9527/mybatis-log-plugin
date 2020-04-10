@@ -54,17 +54,16 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
         <consoleFilterProvider implementation="mybatis.log.MybatisLogProvider"/>
-        <executor implementation="mybatis.log.tail.TailRunExecutor" id="MyBatisLogTail"/>
+<!--        <executor implementation="mybatis.log.tail.TailRunExecutor" id="MyBatisLogTail"/>-->
         <postStartupActivity implementation="mybatis.log.MyBatisLogStartupActivity"/>
-        <toolWindow id="MybatisLogToolWindow" secondary="true" anchor="right"
+        <toolWindow id="MybatisSqlLog" secondary="true" anchor="right"
                     factoryClass="mybatis.log.action.MybatisLogToolWindow"/>
         <projectService serviceImplementation="mybatis.log.action.MybatisLogProjectService"/>
     </extensions>
 
     <actions>
         <!-- Add your actions here -->
-        <action id="TailMyBatisLog" class="mybatis.log.action.TailMyBatisLog" icon="/mybatis/log/icon/mybatis.png"
-                text="MyBatis Log Plugin" description="MyBatis Log Plugin">
+        <action id="TailMyBatisLog" class="mybatis.log.action.TailMyBatisLog">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt shift O"/>
         </action>

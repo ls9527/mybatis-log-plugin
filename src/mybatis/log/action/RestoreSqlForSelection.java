@@ -4,19 +4,22 @@ import com.intellij.execution.ui.ConsoleViewContentType;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.LangDataKeys;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Caret;
 import com.intellij.openapi.editor.CaretModel;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
 import mybatis.log.Icons;
-import mybatis.log.tail.TailRunExecutor;
+import mybatis.log.action.gui.MySqlForm;
 import mybatis.log.util.ConfigUtil;
 import mybatis.log.util.PrintUtil;
 import mybatis.log.util.RestoreSqlUtil;
 import mybatis.log.util.StringConst;
 import org.apache.commons.lang.StringUtils;
 
+import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -39,7 +42,7 @@ public class RestoreSqlForSelection extends AnAction {
         CaretModel caretModel = e.getData(LangDataKeys.EDITOR).getCaretModel();
         Caret currentCaret = caretModel.getCurrentCaret();
         String sqlText = currentCaret.getSelectedText();
-        ToolWindow toolWindow = ToolWindowManager.getInstance(project).getToolWindow(TailRunExecutor.TOOLWINDOWS_ID);
+        ToolWindow toolWindow = ToolWindowManager.getInstance(project).getToolWindow(StringConst.TOOL_WINDOS);
         if(!ConfigUtil.active || !toolWindow.isAvailable()) {
             new ShowLogInConsoleAction(project).showLogInConsole(project);
         }
@@ -74,8 +77,7 @@ public class RestoreSqlForSelection extends AnAction {
                     }
                     if(!parametersLine.endsWith("Parameters: \n") && !parametersLine.endsWith("null\n") && !RestoreSqlUtil.endWithAssembledTypes(parametersLine)) {
                         if(i == sqlArr.length -1) {
-                            PrintUtil.println(project, "Can't restore sql from selection.", PrintUtil.getOutputAttributes(null, Color.yellow));
-                            PrintUtil.println(project, StringConst.SPLIT_LINE, ConsoleViewContentType.USER_INPUT);
+                            Messages.showErrorDialog(project, "Can't restore sql from selection.", "Restore Sql Error");
                             this.reset();
                             break;
                         }
@@ -87,24 +89,37 @@ public class RestoreSqlForSelection extends AnAction {
                         int indexNum = ConfigUtil.getIndexNum(project);
                         String preStr = "--  " + indexNum + "  restore sql from selection  - ==>";
                         ConfigUtil.setIndexNum(project, ++indexNum);
-                        PrintUtil.println(project, preStr, ConsoleViewContentType.USER_INPUT);
                         String restoreSql = RestoreSqlUtil.restoreSql(project, preparingLine, parametersLine);
+
                         if(ConfigUtil.getSqlFormat(project)) {
                             restoreSql = PrintUtil.format(restoreSql);
                         }
-                        PrintUtil.println(project, restoreSql, PrintUtil.getOutputAttributes(null, new Color(255,200,0)));//高亮显示
-                        PrintUtil.println(project, StringConst.SPLIT_LINE, ConsoleViewContentType.USER_INPUT);
+
+                        MybatisLogProjectService instance = MybatisLogProjectService.getInstance(project);
+                        JPanel theSqlPanel = instance.getTheSqlPanel();
+
+//                if (mybatisLogToolWindow instanceof JPanel) {
+                        String finalRestoreSql = restoreSql;
+
+                        ApplicationManager.getApplication().invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                MySqlForm mySqlForm = new MySqlForm(project, preStr,finalRestoreSql);
+                                theSqlPanel.add(mySqlForm.getThePanel());
+                                theSqlPanel.revalidate();
+                                theSqlPanel.repaint();
+                            }
+                        });
+
                         this.reset();
                     }
                 }
             } else {
-                PrintUtil.println(project, "Can't restore sql from selection.", PrintUtil.getOutputAttributes(null, Color.yellow));
-                PrintUtil.println(project, StringConst.SPLIT_LINE, ConsoleViewContentType.USER_INPUT);
+                Messages.showErrorDialog(project, "Can't restore sql from selection.", "Restore Sql Error");
                 this.reset();
             }
         } else {
-            PrintUtil.println(project, "Can't restore sql from selection.", PrintUtil.getOutputAttributes(null, Color.yellow));
-            PrintUtil.println(project, StringConst.SPLIT_LINE, ConsoleViewContentType.USER_INPUT);
+            Messages.showErrorDialog(project, "Can't restore sql from selection.", "Restore Sql Error");
             this.reset();
         }
     }

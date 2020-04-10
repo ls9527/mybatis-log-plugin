@@ -3,16 +3,21 @@ package mybatis.log.action;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.DumbAwareAction;
 import com.intellij.openapi.project.Project;
+import mybatis.log.Icons;
 
 /**
- * 初始化数据
- * @author ob
+ * @author bruce ge
  */
-public class TailMyBatisLog extends DumbAwareAction {
-	@Override
-	public void actionPerformed(AnActionEvent e) {
-		final Project project = e.getProject();
-		if (project == null) return;
-		new ShowLogInConsoleAction(project).showLogInConsole(project);
-	}
+public class TailMyBatisLog  extends DumbAwareAction {
+
+    public TailMyBatisLog(){
+        super("MyBatisCodeHelperLogPlugin","MyBatisLogPlugin", Icons.MyBatisIcon);
+    }
+
+
+    @Override
+    public void actionPerformed(AnActionEvent e) {
+        Project project = getEventProject(e);
+        new ShowLogInConsoleAction(project).showLogInConsole(project);
+    }
 }
