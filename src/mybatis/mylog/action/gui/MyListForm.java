@@ -28,7 +28,7 @@ public class MyListForm {
 
 
     public JPanel getThePanel() {
-        thePanel.add(new MySqlForm(myProject, "Example", "select * from demo_user").getThePanel());
+        thePanel.add(new MySqlForm(myProject, "Example", "select * from demo_user;").getThePanel());
         MybatisLogProjectService.getInstance(myProject).setTheSqlPanel(thePanel);
         return panel1;
     }

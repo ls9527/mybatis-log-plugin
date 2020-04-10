@@ -40,12 +40,21 @@ public class MySqlForm {
         return theSqlText;
     }
 
+
+    public EditorTextField getMyEditorTextField() {
+        return myEditorTextField;
+    }
+
     public JPanel getThePanel() {
         return thePanel;
     }
 
+    public PsiFile getMyPsiFile() {
+        return myPsiFile;
+    }
+
     private void createUIComponents() {
-        String finalSqlText = "# " + comment + "\n" + theSqlText;
+        String finalSqlText = "/* " + comment + " */\n" + theSqlText;
         PsiFile fileFromText = PsiFileFactory.getInstance(myProject).createFileFromText("mybatis.sql", SqlLanguage.INSTANCE, finalSqlText);
         myPsiFile = fileFromText;
         Document document = PsiDocumentManager.getInstance(myProject).getDocument(fileFromText);

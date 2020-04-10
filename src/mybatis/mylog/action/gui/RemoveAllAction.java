@@ -1,10 +1,10 @@
 package mybatis.mylog.action.gui;
 
+import com.google.common.collect.Sets;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import mybatis.mylog.action.MybatisLogProjectService;
-import org.fest.util.Sets;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
