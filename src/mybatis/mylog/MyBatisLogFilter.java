@@ -1,16 +1,15 @@
-package mybatis.log;
+package mybatis.mylog;
 
 import com.intellij.execution.filters.Filter;
-import com.intellij.execution.ui.ConsoleViewContentType;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
-import mybatis.log.action.MybatisLogProjectService;
-import mybatis.log.action.gui.MySqlForm;
-import mybatis.log.util.ConfigUtil;
-import mybatis.log.util.PrintUtil;
-import mybatis.log.util.RestoreSqlUtil;
-import mybatis.log.util.StringConst;
+import mybatis.mylog.action.MybatisLogProjectService;
+import mybatis.mylog.action.gui.MySqlForm;
+import mybatis.mylog.util.ConfigUtil;
+import mybatis.mylog.util.PrintUtil;
+import mybatis.mylog.util.RestoreSqlUtil;
+import mybatis.mylog.util.StringConst;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
 

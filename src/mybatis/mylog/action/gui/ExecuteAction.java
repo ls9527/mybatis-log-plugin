@@ -1,4 +1,4 @@
-package mybatis.log.action.gui;
+package mybatis.mylog.action.gui;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;

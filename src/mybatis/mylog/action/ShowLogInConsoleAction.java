@@ -1,13 +1,13 @@
-package mybatis.log.action;
+package mybatis.mylog.action;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.DumbAwareAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
-import mybatis.log.action.gui.SqlText;
-import mybatis.log.util.ConfigUtil;
-import mybatis.log.util.StringConst;
+import mybatis.mylog.action.gui.SqlText;
+import mybatis.mylog.util.ConfigUtil;
+import mybatis.mylog.util.StringConst;
 
 
 /**

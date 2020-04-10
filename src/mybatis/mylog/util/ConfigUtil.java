@@ -1,9 +1,9 @@
-package mybatis.log.util;
+package mybatis.mylog.util;
 
 import com.intellij.execution.ui.ConsoleView;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.project.Project;
-import mybatis.log.action.gui.SqlText;
+import mybatis.mylog.action.gui.SqlText;
 
 import java.util.HashMap;
 import java.util.Map;

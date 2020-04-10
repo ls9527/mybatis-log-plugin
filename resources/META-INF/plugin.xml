@@ -53,23 +53,23 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
-        <consoleFilterProvider implementation="mybatis.log.MybatisLogProvider"/>
+        <consoleFilterProvider implementation="mybatis.mylog.MybatisLogProvider"/>
 <!--        <executor implementation="mybatis.log.tail.TailRunExecutor" id="MyBatisLogTail"/>-->
 <!--        <postStartupActivity implementation="mybatis.log.MyBatisLogStartupActivity"/>-->
-        <toolWindow id="MybatisSqlLog" secondary="true" anchor="right"
-                    factoryClass="mybatis.log.action.MybatisLogToolWindow"/>
-        <projectService serviceImplementation="mybatis.log.action.MybatisLogProjectService"/>
+        <toolWindow id="MySqlLog" secondary="true" anchor="right"
+                    factoryClass="mybatis.mylog.action.MybatisLogToolWindow"/>
+        <projectService serviceImplementation="mybatis.mylog.action.MybatisLogProjectService"/>
     </extensions>
 
     <actions>
         <!-- Add your actions here -->
-        <action id="TailMyBatisLog" class="mybatis.log.action.TailMyBatisLog">
+        <action id="TailMyBatisCodeHelperLog" class="mybatis.mylog.action.TailMyBatisLog">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt shift O"/>
         </action>
 
         <!-- restore sql from selection -->
-        <action class="mybatis.log.action.RestoreSqlForSelection" id="RestoreSqlAction" text="Restore Sql from Selection"
+        <action class="mybatis.mylog.action.RestoreSqlForSelection" id="RestoreMybatisSql" text="Restore Sql from Selection"
                 description="Restore Sql from Selection">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <add-to-group group-id="ConsoleEditorPopupMenu" anchor="before" relative-to-action="ConsoleView.ClearAll"/>

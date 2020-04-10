@@ -1,13 +1,11 @@
-package mybatis.log.action.gui;
+package mybatis.mylog.action.gui;
 
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionToolbar;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.VerticalFlowLayout;
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
-import mybatis.log.action.MybatisLogProjectService;
+import mybatis.mylog.action.MybatisLogProjectService;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;

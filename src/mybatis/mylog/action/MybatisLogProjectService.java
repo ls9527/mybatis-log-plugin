@@ -1,4 +1,4 @@
-package mybatis.log.action;
+package mybatis.mylog.action;
 
 
 import com.intellij.openapi.components.ServiceManager;

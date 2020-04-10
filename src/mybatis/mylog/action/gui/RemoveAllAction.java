@@ -1,9 +1,9 @@
-package mybatis.log.action.gui;
+package mybatis.mylog.action.gui;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import mybatis.log.action.MybatisLogProjectService;
+import mybatis.mylog.action.MybatisLogProjectService;
 import org.fest.util.Sets;
 import org.jetbrains.annotations.NotNull;
 

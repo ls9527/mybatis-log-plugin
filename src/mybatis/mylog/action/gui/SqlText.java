@@ -1,12 +1,12 @@
-package mybatis.log.action.gui;
+package mybatis.mylog.action.gui;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import mybatis.log.util.BareBonesBrowserLaunch;
-import mybatis.log.util.ConfigUtil;
-import mybatis.log.util.RestoreSqlUtil;
+import mybatis.mylog.util.BareBonesBrowserLaunch;
+import mybatis.mylog.util.ConfigUtil;
+import mybatis.mylog.util.RestoreSqlUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;

@@ -1,4 +1,4 @@
-package mybatis.log.util;
+package mybatis.mylog.util;
 
 /**
  * 字符串常量

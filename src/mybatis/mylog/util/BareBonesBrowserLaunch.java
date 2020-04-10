@@ -1,4 +1,4 @@
-package mybatis.log.util;
+package mybatis.mylog.util;
 
 import javax.swing.JOptionPane;
 import java.util.Arrays;

@@ -1,6 +1,5 @@
-package mybatis.log.action;
+package mybatis.mylog.action;
 
-import com.intellij.execution.ui.ConsoleViewContentType;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.LangDataKeys;
@@ -11,16 +10,15 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
-import mybatis.log.Icons;
-import mybatis.log.action.gui.MySqlForm;
-import mybatis.log.util.ConfigUtil;
-import mybatis.log.util.PrintUtil;
-import mybatis.log.util.RestoreSqlUtil;
-import mybatis.log.util.StringConst;
+import mybatis.mylog.Icons;
+import mybatis.mylog.action.gui.MySqlForm;
+import mybatis.mylog.util.ConfigUtil;
+import mybatis.mylog.util.PrintUtil;
+import mybatis.mylog.util.RestoreSqlUtil;
+import mybatis.mylog.util.StringConst;
 import org.apache.commons.lang.StringUtils;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * restore sql from selection

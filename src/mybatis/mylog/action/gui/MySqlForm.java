@@ -1,14 +1,8 @@
-package mybatis.log.action.gui;
+package mybatis.mylog.action.gui;
 
-import com.google.common.collect.Lists;
-import com.intellij.ide.CopyProvider;
-import com.intellij.ide.DataManager;
-import com.intellij.ide.TextCopyProvider;
-import com.intellij.ide.actions.CopyAction;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionToolbar;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.project.Project;
@@ -18,11 +12,9 @@ import com.intellij.psi.PsiFileFactory;
 import com.intellij.sql.SqlFileType;
 import com.intellij.sql.psi.SqlLanguage;
 import com.intellij.ui.EditorTextField;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Collection;
 
 /**
  * @author bruce ge

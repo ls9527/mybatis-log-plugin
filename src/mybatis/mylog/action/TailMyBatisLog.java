@@ -1,9 +1,9 @@
-package mybatis.log.action;
+package mybatis.mylog.action;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.DumbAwareAction;
 import com.intellij.openapi.project.Project;
-import mybatis.log.Icons;
+import mybatis.mylog.Icons;
 
 /**
  * @author bruce ge

@@ -1,4 +1,4 @@
-package mybatis.log;
+package mybatis.mylog;
 
 import com.intellij.execution.filters.ConsoleFilterProvider;
 import com.intellij.execution.filters.Filter;
