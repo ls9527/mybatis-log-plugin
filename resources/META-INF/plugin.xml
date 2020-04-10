@@ -56,7 +56,7 @@
         <consoleFilterProvider implementation="mybatis.mylog.MybatisLogProvider"/>
 <!--        <executor implementation="mybatis.log.tail.TailRunExecutor" id="MyBatisLogTail"/>-->
 <!--        <postStartupActivity implementation="mybatis.log.MyBatisLogStartupActivity"/>-->
-        <toolWindow id="MySqlLog" secondary="true" anchor="right"
+        <toolWindow id="MybatisSql" secondary="true" anchor="bottom"
                     factoryClass="mybatis.mylog.action.MybatisLogToolWindow"/>
         <projectService serviceImplementation="mybatis.mylog.action.MybatisLogProjectService"/>
     </extensions>
@@ -65,7 +65,7 @@
         <!-- Add your actions here -->
         <action id="TailMyBatisCodeHelperLog" class="mybatis.mylog.action.TailMyBatisLog">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
-            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt shift O"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt shift M"/>
         </action>
 
         <!-- restore sql from selection -->
@@ -74,7 +74,6 @@
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <add-to-group group-id="ConsoleEditorPopupMenu" anchor="before" relative-to-action="ConsoleView.ClearAll"/>
         </action>
-
     </actions>
 
 </idea-plugin>
