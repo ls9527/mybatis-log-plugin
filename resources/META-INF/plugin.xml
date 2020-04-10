@@ -20,9 +20,7 @@
       <br/>
       把 mybatis 输出的sql日志还原成完整的sql语句。<br/>
       将日志输出的sql语句中的问号 ? 替换成真正的参数值。<br/>
-      通过 "Tools -> MyBatis Log Plugin" 菜单或快捷键 "Ctrl+Shift+Alt+O" 启用。<br/>
-      点击窗口左边的 "Filter" 按钮，可以过滤不想要输出的sql语句。<br/>
-      点击窗口左边的 "Format Sql" 按钮，可以格式化输出的sql语句。<br/>
+      通过 "Tools -> MyBatisCodeHelperLogPlugin" 菜单或快捷键 "Ctrl+Shift+Alt+M" 启用。<br/>
       选中console的sql日志，右击 "Restore Sql from Selection" 菜单可以还原sql语句。<br/>
       前提条件：输出的sql日志必须包含"Preparing:"和"Parameters:"才能正常解析。<br/>
       <br/>
@@ -56,7 +54,7 @@
         <consoleFilterProvider implementation="mybatis.mylog.MybatisLogProvider"/>
 <!--        <executor implementation="mybatis.log.tail.TailRunExecutor" id="MyBatisLogTail"/>-->
 <!--        <postStartupActivity implementation="mybatis.log.MyBatisLogStartupActivity"/>-->
-        <toolWindow id="MybatisSql" secondary="true" anchor="bottom"
+        <toolWindow id="Mybatis Sql" secondary="true" anchor="bottom"
                     factoryClass="mybatis.mylog.action.MybatisLogToolWindow"/>
         <projectService serviceImplementation="mybatis.mylog.action.MybatisLogProjectService"/>
     </extensions>

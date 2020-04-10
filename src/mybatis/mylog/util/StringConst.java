@@ -20,7 +20,7 @@ public class StringConst {
     public static final String indexNumKey = PLUGIN_ID + "indexNum";
 
 
-    public static final String TOOL_WINDOS = "MybatisSql";
+    public static final String TOOL_WINDOS = "Mybatis Sql";
 
 
 }

@@ -1,7 +1,7 @@
 package mybatis.mylog.action;
 
+import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.project.DumbAwareAction;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
@@ -15,7 +15,7 @@ import mybatis.mylog.util.StringConst;
  *
  * @author ob
  */
-public class ShowLogInConsoleAction extends DumbAwareAction {
+public class ShowLogInConsoleAction extends AnAction {
 
     public ShowLogInConsoleAction(Project project) {
         super();

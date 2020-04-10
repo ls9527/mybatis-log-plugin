@@ -4,6 +4,7 @@ import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
+import com.intellij.psi.JavaPsiFacade;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import mybatis.mylog.Icons;
@@ -15,7 +16,7 @@ import javax.swing.*;
 /**
  * @author bruce ge
  */
-public class MybatisLogToolWindow implements ToolWindowFactory, DumbAware {
+public class MybatisLogToolWindow implements ToolWindowFactory{
     private JPanel myToolWindowContent;
 
     private ToolWindow myToolWindow;
