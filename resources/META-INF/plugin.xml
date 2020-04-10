@@ -1,11 +1,11 @@
 <idea-plugin>
-    <id>MyBatisLogPlugin</id>
-    <name>MyBatis Log Plugin</name>
+    <id>MyBatisCodeHelperLogPlugin</id>
+    <name>MyBatisCodeHelperLogPlugin</name>
     <version>2.1.1</version>
-    <vendor email="kookob@gmail.com" url="">ob</vendor>
+    <vendor email="gejun123456@gmail.com" url="">gejun123456@gmail.com</vendor>
     <description>
     <![CDATA[
-      MyBatis Log Plugin
+      The plugin is forked from MyBatis Log Plugin, Add function for sql execute, Highlight.
       <br/>
       -----------------------------------------------------------------------------------------------------------------------
       <br/>
@@ -55,7 +55,7 @@
         <!-- Add your extensions here -->
         <consoleFilterProvider implementation="mybatis.log.MybatisLogProvider"/>
 <!--        <executor implementation="mybatis.log.tail.TailRunExecutor" id="MyBatisLogTail"/>-->
-        <postStartupActivity implementation="mybatis.log.MyBatisLogStartupActivity"/>
+<!--        <postStartupActivity implementation="mybatis.log.MyBatisLogStartupActivity"/>-->
         <toolWindow id="MybatisSqlLog" secondary="true" anchor="right"
                     factoryClass="mybatis.log.action.MybatisLogToolWindow"/>
         <projectService serviceImplementation="mybatis.log.action.MybatisLogProjectService"/>

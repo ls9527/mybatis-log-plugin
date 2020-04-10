@@ -1,7 +1,7 @@
 
 buildscript {
     ext.kotlin_version = '1.2.20'
-    ext.myPluginName = 'MybatisLogPlugin'
+    ext.myPluginName = 'MybatisCodeHelperLogPlugin'
 
     //162 181 183 172 171 173 191
     ext.ideaVersion = 201
