@@ -20,7 +20,7 @@ public class ConfigUtil {
 
     public static void init(Project project) {
         if(project != null) {
-            setRunning(project, false);
+            setRunning(project, true);
             setSqlFormat(project, false);
             setIndexNum(project, 1);
             setPreparing(project, StringConst.PREPARING);
