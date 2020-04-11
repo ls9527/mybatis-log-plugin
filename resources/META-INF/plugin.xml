@@ -57,6 +57,7 @@
         <toolWindow id="Mybatis Sql" secondary="true" anchor="bottom"
                     factoryClass="mybatis.mylog.action.MybatisLogToolWindow"/>
         <projectService serviceImplementation="mybatis.mylog.action.MybatisLogProjectService"/>
+        <postStartupActivity implementation="mybatis.mylog.MyBatisLogStartupActivity"/>
     </extensions>
 
     <actions>
