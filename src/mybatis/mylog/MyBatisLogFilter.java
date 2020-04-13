@@ -99,16 +99,18 @@ public class MyBatisLogFilter implements Filter {
                         @Override
                         public void run() {
                             ToolWindow toolWindow = ToolWindowManager.getInstance(project).getToolWindow(StringConst.TOOL_WINDOS);
-                            toolWindow.show();
-                            JPanel theSqlPanel = instance.getTheSqlPanel();
-                            if (theSqlPanel == null) {
-                                throw new RuntimeException("the sql panel is null");
+                            if(toolWindow!=null) {
+                                toolWindow.show();
+                                JPanel theSqlPanel = instance.getTheSqlPanel();
+                                if (theSqlPanel == null) {
+                                    throw new RuntimeException("the sql panel is null");
+                                }
+                                MySqlForm mySqlForm = new MySqlForm(project, comment, finalRestoreSql);
+                                theSqlPanel.add(mySqlForm.getThePanel());
+                                theSqlPanel.revalidate();
+                                theSqlPanel.repaint();
+                                toolWindow.activate(null);
                             }
-                            MySqlForm mySqlForm = new MySqlForm(project, comment, finalRestoreSql);
-                            theSqlPanel.add(mySqlForm.getThePanel());
-                            theSqlPanel.revalidate();
-                            theSqlPanel.repaint();
-                            toolWindow.activate(null);
                         }
                     });
 //                }
