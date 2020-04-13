@@ -1,12 +1,12 @@
 package mybatis.mylog.action.gui;
 
+import mybatis.mylog.util.ConfigUtil;
+import mybatis.mylog.util.StringConst;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import mybatis.mylog.util.ConfigUtil;
-import mybatis.mylog.util.StringConst;
 import org.apache.commons.lang.StringUtils;
 
 import javax.swing.*;

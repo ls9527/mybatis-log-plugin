@@ -1,4 +1,4 @@
-//package mybatis.log.tail;
+package mybatis.mylog.tail;//package mybatis.log.tail;
 //
 //import com.intellij.execution.Executor;
 //import com.intellij.execution.ExecutorRegistry;

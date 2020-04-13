@@ -1,11 +1,11 @@
 package mybatis.mylog.action.gui;
 
+import mybatis.mylog.MyBatisLogFilter;
+import mybatis.mylog.action.MybatisLogProjectService;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
-import mybatis.mylog.MyBatisLogFilter;
-import mybatis.mylog.action.MybatisLogProjectService;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -15,7 +15,7 @@ public class ExecuteAction extends AnAction {
     private MySqlForm theForm;
 
     public ExecuteAction(MySqlForm mySqlForm) {
-        super("Execute","Execute sql",AllIcons.Actions.Execute);
+        super("Execute","Execute sql", AllIcons.Actions.Execute);
         theForm = mySqlForm;
     }
 

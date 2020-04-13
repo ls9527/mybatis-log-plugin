@@ -1,7 +1,7 @@
 package mybatis.mylog.util;
 
-import com.intellij.openapi.project.Project;
 import mybatis.mylog.hibernate.BasicFormatterImpl;
+import com.intellij.openapi.project.Project;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.HashSet;

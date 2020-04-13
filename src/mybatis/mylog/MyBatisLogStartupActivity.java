@@ -1,11 +1,8 @@
 package mybatis.mylog;
 
-import com.intellij.ide.util.PropertiesComponent;
+import mybatis.mylog.util.ConfigUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupActivity;
-import mybatis.mylog.action.ShowLogInConsoleAction;
-import mybatis.mylog.util.ConfigUtil;
-import mybatis.mylog.util.StringConst;
 import org.jetbrains.annotations.NotNull;
 
 public class MyBatisLogStartupActivity implements StartupActivity {

@@ -1,139 +1,103 @@
 package mybatis.mylog.action.gui;
 
+import mybatis.mylog.MyBatisLogFilter;
+import mybatis.mylog.action.MybatisLogProjectService;
+import mybatis.mylog.util.ConfigUtil;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.DialogWrapper;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import mybatis.mylog.util.BareBonesBrowserLaunch;
-import mybatis.mylog.util.ConfigUtil;
-import mybatis.mylog.util.RestoreSqlUtil;
+import com.intellij.util.ui.JBDimension;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 
 /**
  * @author ob
  * @email huanglingbin@chainfly.com
  * @date 2019/6/20
  */
-public class SqlText extends JFrame {
-    private static String preparingLine = "";
-    private static String parametersLine = "";
-    private static boolean isEnd = false;
+public class SqlText extends DialogWrapper {
 
     private JPanel panel1;
     private JButton buttonOK;
-    private JButton buttonCopy;
-    private JButton buttonClose;
     private JTextArea originalTextArea;
-    private JTextArea resultTextArea;
     private JButton buttonClear;
-    private JButton alipayDonate;
-    private JButton githubButton;
 
     public SqlText(Project project) {
-        this.setTitle("restore sql from text"); //设置标题
-        setContentPane(panel1);
-        getRootPane().setDefaultButton(buttonOK);
-        buttonOK.addActionListener(e -> onOK(project));
-        buttonCopy.addActionListener(e -> onCopy());
-        buttonClear.addActionListener(e -> onClear());
-        buttonClose.addActionListener(e -> onClose());
-
-        alipayDonate.setContentAreaFilled(false);
-        alipayDonate.addActionListener(e -> BareBonesBrowserLaunch.openURL("https://github.com/kookob/mybatis-log-plugin/blob/master/DONATE.md"));
-
-        githubButton.setBorder(null);
-        githubButton.setContentAreaFilled(false);
-        githubButton.addActionListener(e -> BareBonesBrowserLaunch.openURL("https://github.com/kookob/mybatis-log-plugin"));
-
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                onClose();
+        super(project, true, IdeModalityType.MODELESS);
+        this.setTitle("Restore Sql from Text"); //设置标题
+        this.setResizable(true);
+        buttonOK.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onOK(project);
             }
         });
-        panel1.registerKeyboardAction(e -> onClose(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        originalTextArea.setMinimumSize(new JBDimension(500, 500));
+        buttonClear.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                onClear();
+            }
+        });
+        setOKActionEnabled(false);
+        init();
+    }
+
+    @Nullable
+    @Override
+    protected JComponent createCenterPanel() {
+        return panel1;
     }
 
     private void onOK(Project project) {
         if (originalTextArea == null || StringUtils.isBlank(originalTextArea.getText())) {
-            this.resultTextArea.setText("Can't restore sql from text.");
+            Messages.showErrorDialog(project, "Text area is empty", "Extract Sql Error");
             return;
         }
         String originalText = originalTextArea.getText();
         final String PREPARING = ConfigUtil.getPreparing(project);
         final String PARAMETERS = ConfigUtil.getParameters(project);
         if (originalText.contains(PREPARING) && originalText.contains(PARAMETERS)) {
+            List<String> results = Lists.newArrayList();
             String[] sqlArr = originalText.split("\n");
             if (sqlArr != null && sqlArr.length >= 2) {
                 String resultSql = "";
+                MyBatisLogFilter myBatisLogFilter = new MyBatisLogFilter(project);
+                myBatisLogFilter.reset();
                 for (int i = 0; i < sqlArr.length; ++i) {
                     String currentLine = sqlArr[i];
-                    if (StringUtils.isBlank(currentLine)) {
-                        continue;
-                    }
-                    if (currentLine.contains(PREPARING)) {
-                        preparingLine = currentLine;
-                        continue;
-                    } else {
-                        currentLine += "\n";
-                    }
-                    if (StringUtils.isEmpty(preparingLine)) {
-                        continue;
-                    }
-                    if (currentLine.contains(PARAMETERS)) {
-                        parametersLine = currentLine;
-                    } else {
-                        if (StringUtils.isBlank(parametersLine)) {
-                            continue;
-                        }
-                        parametersLine += currentLine;
-                    }
-                    if (!parametersLine.endsWith("Parameters: \n") && !parametersLine.endsWith("null\n") && !parametersLine.endsWith(")\n")) {
-                        if (i == sqlArr.length - 1) {
-                            this.resultTextArea.setText("Can't restore sql from text.");
-                            break;
-                        }
-                        continue;
-                    } else {
-                        isEnd = true;
-                    }
-                    if (StringUtils.isNotEmpty(preparingLine) && StringUtils.isNotEmpty(parametersLine) && isEnd) {
-                        resultSql += RestoreSqlUtil.restoreSql(project, preparingLine, parametersLine) + "\n------------------------------------------------------------\n";
-                    }
+                    myBatisLogFilter.doHandle(currentLine + "\n", sqlArr.length, results);
                 }
-                if (StringUtils.isNotEmpty(resultSql)) {
-                    this.resultTextArea.setText(resultSql);
+                myBatisLogFilter.reset();
+                if (results.size() == 0) {
+                    Messages.showErrorDialog(project, "Cant extract from sql", "Extract Sql Error");
+                } else {
+                    MyBatisLogFilter.writeAndNavigateToSqlFile(project, Joiner.on("\n\n").join(results), MybatisLogProjectService.getInstance(project));
                 }
             } else {
-                this.resultTextArea.setText("Can't restore sql from text.");
+                Messages.showErrorDialog(project, "Cant extract from sql", "Extract Sql Error");
             }
         } else {
-            this.resultTextArea.setText("Can't restore sql from text.");
+            Messages.showErrorDialog(project, "Cant extract from sql", "Extract Sql Error");
         }
     }
 
-    private void onCopy() {
-        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-        StringSelection selection = new StringSelection(this.resultTextArea.getText());
-        clipboard.setContents(selection, null);
-    }
 
     private void onClear() {
-        this.resultTextArea.setText("");
         this.originalTextArea.setText("");
     }
 
-    private void onClose() {
-        this.setVisible(false);
-    }
 
     {
 // GUI initializer generated by IntelliJ IDEA GUI Designer
@@ -153,46 +117,28 @@ public class SqlText extends JFrame {
         panel1 = new JPanel();
         panel1.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         final JPanel panel2 = new JPanel();
-        panel2.setLayout(new GridLayoutManager(4, 1, new Insets(10, 10, 10, 10), -1, -1));
+        panel2.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
         panel1.add(panel2, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JScrollPane scrollPane1 = new JScrollPane();
-        panel2.add(scrollPane1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        resultTextArea = new JTextArea();
-        scrollPane1.setViewportView(resultTextArea);
-        final JScrollPane scrollPane2 = new JScrollPane();
-        panel2.add(scrollPane2, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panel2.add(scrollPane1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         originalTextArea = new JTextArea();
-        scrollPane2.setViewportView(originalTextArea);
+        originalTextArea.setColumns(40);
+        originalTextArea.setEnabled(true);
+        originalTextArea.setRows(20);
+        scrollPane1.setViewportView(originalTextArea);
         final JPanel panel3 = new JPanel();
-        panel3.setLayout(new GridLayoutManager(1, 6, new Insets(0, 0, 0, 0), -1, -1));
+        panel3.setLayout(new GridLayoutManager(1, 5, new Insets(0, 0, 0, 0), -1, -1));
         panel2.add(panel3, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         buttonOK = new JButton();
         buttonOK.setText("Restore Sql");
         panel3.add(buttonOK, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer1 = new Spacer();
-        panel3.add(spacer1, new GridConstraints(0, 5, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        buttonCopy = new JButton();
-        buttonCopy.setText("Copy");
-        panel3.add(buttonCopy, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel3.add(spacer1, new GridConstraints(0, 4, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final Spacer spacer2 = new Spacer();
         panel3.add(spacer2, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         buttonClear = new JButton();
         buttonClear.setText("Clear");
-        panel3.add(buttonClear, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JPanel panel4 = new JPanel();
-        panel4.setLayout(new GridLayoutManager(1, 4, new Insets(5, 10, 5, 10), -1, -1));
-        panel2.add(panel4, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        alipayDonate = new JButton();
-        alipayDonate.setText("Donate");
-        panel4.add(alipayDonate, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer3 = new Spacer();
-        panel4.add(spacer3, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        githubButton = new JButton();
-        githubButton.setText("GitHub");
-        panel4.add(githubButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        buttonClose = new JButton();
-        buttonClose.setText("Close");
-        panel4.add(buttonClose, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel3.add(buttonClear, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**
@@ -201,4 +147,5 @@ public class SqlText extends JFrame {
     public JComponent $$$getRootComponent$$$() {
         return panel1;
     }
+
 }

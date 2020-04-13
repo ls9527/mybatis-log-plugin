@@ -1,16 +1,17 @@
 package mybatis.mylog.action.gui;
 
+import com.intellij.lang.Language;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionToolbar;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.ex.EditorEx;
+import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Pair;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
-import com.intellij.sql.SqlFileType;
-import com.intellij.sql.psi.SqlLanguage;
 import com.intellij.ui.EditorTextField;
 
 import javax.swing.*;
@@ -55,11 +56,12 @@ public class MySqlForm {
 
     private void createUIComponents() {
         String finalSqlText = "/* " + comment + " */\n" + theSqlText;
-        PsiFile fileFromText = PsiFileFactory.getInstance(myProject).createFileFromText("mybatis.sql", SqlLanguage.INSTANCE, finalSqlText);
+        Pair<Language, FileType> languageAndType = UltimateChecker.getLanguageAndType();
+        PsiFile fileFromText = PsiFileFactory.getInstance(myProject).createFileFromText("mybatis.sql", languageAndType.first, finalSqlText);
         myPsiFile = fileFromText;
         Document document = PsiDocumentManager.getInstance(myProject).getDocument(fileFromText);
         myDocument = document;
-        myEditorTextField = new EditorTextField(document, myProject, SqlFileType.INSTANCE) {
+        myEditorTextField = new EditorTextField(document, myProject, languageAndType.second) {
             @Override
             protected EditorEx createEditor() {
                 EditorEx editor = super.createEditor();

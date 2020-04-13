@@ -1,4 +1,4 @@
-//package mybatis.log.tail;
+package mybatis.mylog.tail;//package mybatis.log.tail;
 //
 //import com.intellij.execution.DefaultExecutionResult;
 //import com.intellij.execution.ExecutionException;

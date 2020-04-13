@@ -1,14 +1,12 @@
 package mybatis.mylog.action;
 
-import com.intellij.openapi.project.DumbAware;
+import mybatis.mylog.Icons;
+import mybatis.mylog.action.gui.MyListForm;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
-import com.intellij.psi.JavaPsiFacade;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
-import mybatis.mylog.Icons;
-import mybatis.mylog.action.gui.MyListForm;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -16,7 +14,7 @@ import javax.swing.*;
 /**
  * @author bruce ge
  */
-public class MybatisLogToolWindow implements ToolWindowFactory{
+public class MybatisLogToolWindow implements ToolWindowFactory {
     private JPanel myToolWindowContent;
 
 

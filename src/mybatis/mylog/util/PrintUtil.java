@@ -1,5 +1,6 @@
 package mybatis.mylog.util;
 
+
 import mybatis.mylog.hibernate.BasicFormatterImpl;
 
 /**

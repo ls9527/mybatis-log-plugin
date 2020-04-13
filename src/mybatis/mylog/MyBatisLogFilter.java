@@ -1,5 +1,11 @@
 package mybatis.mylog;
 
+import mybatis.mylog.action.MybatisLogProjectService;
+import mybatis.mylog.action.gui.MySqlForm;
+import mybatis.mylog.util.ConfigUtil;
+import mybatis.mylog.util.PrintUtil;
+import mybatis.mylog.util.RestoreSqlUtil;
+import mybatis.mylog.util.StringConst;
 import com.intellij.codeInsight.CodeInsightUtil;
 import com.intellij.execution.filters.Filter;
 import com.intellij.execution.filters.HyperlinkInfo;
@@ -16,16 +22,11 @@ import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
-import mybatis.mylog.action.MybatisLogProjectService;
-import mybatis.mylog.action.gui.MySqlForm;
-import mybatis.mylog.util.ConfigUtil;
-import mybatis.mylog.util.PrintUtil;
-import mybatis.mylog.util.RestoreSqlUtil;
-import mybatis.mylog.util.StringConst;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.List;
 
 /**
  * 语句过滤器
@@ -42,6 +43,11 @@ public class MyBatisLogFilter implements Filter {
     @Nullable
     @Override
     public Result applyFilter(final String currentLine, int endPoint) {
+        return doHandle(currentLine, endPoint, null);
+    }
+
+    @Nullable
+    public Result doHandle(String currentLine, int endPoint, List<String> collector) {
         if(this.project == null) return null;
         if(ConfigUtil.getRunning(project)) {
             //过滤不显示的语句
@@ -76,12 +82,13 @@ public class MyBatisLogFilter implements Filter {
             }
             boolean alreadyContainInSqlConsole = false;
             MybatisLogProjectService instance = MybatisLogProjectService.getInstance(project);
-            if (instance.getSqlList().contains(preparingLine+currentLine)) {
-                alreadyContainInSqlConsole = true;
-            } else {
-                instance.getSqlList().add(preparingLine+currentLine);
+            if (collector == null) {
+                if (instance.getSqlList().contains(preparingLine + currentLine)) {
+                    alreadyContainInSqlConsole = true;
+                } else {
+                    instance.getSqlList().add(preparingLine + currentLine);
+                }
             }
-
 
             if (StringUtils.isNotEmpty(preparingLine) && StringUtils.isNotEmpty(parametersLine)) {
                 int indexNum = ConfigUtil.getIndexNum(project);
@@ -94,22 +101,32 @@ public class MyBatisLogFilter implements Filter {
 //                if (mybatisLogToolWindow instanceof JPanel) {
                 String comment = preStr;
                 String finalRestoreSql = restoreSql;
+                if (collector != null) {
+                    collector.add("/* " + preStr + " */\n" + restoreSql);
+                    preparingLine = "";
+                    return null;
+                }
                 if (!alreadyContainInSqlConsole) {
                     ApplicationManager.getApplication().invokeLater(new Runnable() {
                         @Override
                         public void run() {
                             ToolWindow toolWindow = ToolWindowManager.getInstance(project).getToolWindow(StringConst.TOOL_WINDOS);
                             if(toolWindow!=null) {
-                                toolWindow.show();
-                                JPanel theSqlPanel = instance.getTheSqlPanel();
-                                if (theSqlPanel == null) {
-                                    throw new RuntimeException("the sql panel is null");
-                                }
-                                MySqlForm mySqlForm = new MySqlForm(project, comment, finalRestoreSql);
-                                theSqlPanel.add(mySqlForm.getThePanel());
-                                theSqlPanel.revalidate();
-                                theSqlPanel.repaint();
-                                toolWindow.activate(null);
+                                toolWindow.show(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        JPanel theSqlPanel = instance.getTheSqlPanel();
+                                        if (theSqlPanel == null) {
+                                            throw new RuntimeException("the sql panel is null");
+                                        }
+                                        MySqlForm mySqlForm = new MySqlForm(project, comment, finalRestoreSql);
+                                        theSqlPanel.add(mySqlForm.getThePanel());
+                                        theSqlPanel.revalidate();
+                                        theSqlPanel.repaint();
+                                        toolWindow.activate(null);
+                                    }
+                                });
+
                             }
                         }
                     });
@@ -127,6 +144,10 @@ public class MyBatisLogFilter implements Filter {
             }
         }
         return null;
+    }
+
+    public void reset() {
+        preparingLine = "";
     }
 
     public static void writeAndNavigateToSqlFile(Project project, String finalRestoreSql, MybatisLogProjectService instance) {
