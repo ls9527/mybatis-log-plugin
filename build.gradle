@@ -73,8 +73,11 @@ intellij {
 //        username 'AmailP'
 //        pluginId '7415'
 //    }
-   
-        plugins 'DatabaseTools','java'/*,'PsiViewer:191.4212'*/
+        if(ideaVersion>191) {
+            plugins 'DatabaseTools', 'java'/*,'PsiViewer:191.4212'*/
+        } else {
+            plugins 'DatabaseTools'
+        }
    
     sandboxDirectory 'sandbox'
 

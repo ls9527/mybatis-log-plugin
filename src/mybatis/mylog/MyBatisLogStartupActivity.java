@@ -12,7 +12,7 @@ public class MyBatisLogStartupActivity implements StartupActivity {
     @Override
     public void runActivity(@NotNull Project project) {
         if (project == null) return;
-        ConfigUtil.setRunning(project, true);
+        ConfigUtil.init(project);
 //        int startup = PropertiesComponent.getInstance(project).getInt(StringConst.STARTUP_KEY, 1);
 //        if(startup == 1) {
 //            new ShowLogInConsoleAction(project).showLogInConsole(project);

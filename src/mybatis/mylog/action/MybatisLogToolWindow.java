@@ -19,23 +19,20 @@ import javax.swing.*;
 public class MybatisLogToolWindow implements ToolWindowFactory{
     private JPanel myToolWindowContent;
 
-    private ToolWindow myToolWindow;
 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
         myToolWindowContent = new MyListForm(project).getThePanel();
-        myToolWindow = toolWindow;
         ContentFactory instance = ContentFactory.SERVICE.getInstance();
         Content content = instance.createContent(myToolWindowContent, "", false);
         content.setIcon(Icons.MyBatisIcon);
         toolWindow.getContentManager().addContent(content);
+        toolWindow.setAutoHide(true);
     }
 
     public void init(ToolWindow window) {
         window.setIcon(Icons.MyBatisIcon);
     }
-
-
 
     public boolean shouldBeAvailable(@NotNull Project project) {
         return true;

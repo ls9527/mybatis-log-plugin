@@ -1,15 +1,19 @@
 package mybatis.mylog;
 
-import com.google.common.collect.Lists;
 import com.intellij.codeInsight.CodeInsightUtil;
 import com.intellij.execution.filters.Filter;
 import com.intellij.execution.filters.HyperlinkInfo;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.editor.Document;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.ScrollType;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
+import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import mybatis.mylog.action.MybatisLogProjectService;
@@ -18,14 +22,10 @@ import mybatis.mylog.util.ConfigUtil;
 import mybatis.mylog.util.PrintUtil;
 import mybatis.mylog.util.RestoreSqlUtil;
 import mybatis.mylog.util.StringConst;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.io.File;
-import java.io.IOException;
-import java.util.UUID;
 
 /**
  * 语句过滤器
@@ -98,7 +98,8 @@ public class MyBatisLogFilter implements Filter {
                     ApplicationManager.getApplication().invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                            ToolWindowManager.getInstance(project).getToolWindow(StringConst.TOOL_WINDOS).activate(null);
+                            ToolWindow toolWindow = ToolWindowManager.getInstance(project).getToolWindow(StringConst.TOOL_WINDOS);
+                            toolWindow.show();
                             JPanel theSqlPanel = instance.getTheSqlPanel();
                             if (theSqlPanel == null) {
                                 throw new RuntimeException("the sql panel is null");
@@ -107,6 +108,7 @@ public class MyBatisLogFilter implements Filter {
                             theSqlPanel.add(mySqlForm.getThePanel());
                             theSqlPanel.revalidate();
                             theSqlPanel.repaint();
+                            toolWindow.activate(null);
                         }
                     });
 //                }
@@ -117,21 +119,29 @@ public class MyBatisLogFilter implements Filter {
                 return new Result(textStartOffset, textStartOffset + currentLine.length(), new HyperlinkInfo() {
                     @Override
                     public void navigate(Project project) {
-                        File tempFile = null;
-                        try {
-                            tempFile = File.createTempFile(UUID.randomUUID().toString(), ".sql");
-                            FileUtils.writeLines(tempFile, Lists.newArrayList(finalRestoreSql));
-                            tempFile.deleteOnExit();
-                            VirtualFile virtualFile = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(tempFile);
-                            PsiFile file = PsiManager.getInstance(project).findFile(virtualFile);
-                            CodeInsightUtil.positionCursor(project, file, file);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        writeAndNavigateToSqlFile(project, finalRestoreSql, instance);
                     }
                 });
             }
         }
         return null;
+    }
+
+    public static void writeAndNavigateToSqlFile(Project project, String finalRestoreSql, MybatisLogProjectService instance) {
+        String finalText = "\n\n\n" + finalRestoreSql;
+        VirtualFile virtualFile1 = instance.getVirtualFile();
+        PsiFile file = PsiManager.getInstance(project).findFile(virtualFile1);
+        PsiDocumentManager instance1 = PsiDocumentManager.getInstance(project);
+        WriteCommandAction.runWriteCommandAction(project, new Runnable() {
+            @Override
+            public void run() {
+                Document document = instance1.getDocument(file);
+                document.insertString(document.getTextLength(), finalText);
+                instance1.commitDocument(document);
+                Editor editor = CodeInsightUtil.positionCursor(project, file, file);
+                editor.getCaretModel().moveToOffset(document.getTextLength());
+                editor.getScrollingModel().scrollToCaret(ScrollType.CENTER);
+            }
+        });
     }
 }
