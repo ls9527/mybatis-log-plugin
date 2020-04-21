@@ -1,5 +1,6 @@
 package mybatis.mylog;
 
+import kotlin.text.Charsets;
 import mybatis.mylog.action.MybatisLogProjectService;
 import mybatis.mylog.action.gui.MySqlForm;
 import mybatis.mylog.util.ConfigUtil;
@@ -26,6 +27,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.nio.charset.Charset;
 import java.util.List;
 
 /**

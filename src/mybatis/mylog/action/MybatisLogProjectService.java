@@ -6,6 +6,7 @@ import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
+import kotlin.text.Charsets;
 
 import javax.swing.*;
 import java.io.File;
@@ -33,6 +34,7 @@ public class MybatisLogProjectService {
                     ;
                     tempFile.deleteOnExit();
                     VirtualFile virtualFile = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(tempFile);
+                    virtualFile.setCharset(Charsets.UTF_8);
                     this.virtualFile = virtualFile;
                 } catch (Exception e) {
                     throw new RuntimeException(e);
