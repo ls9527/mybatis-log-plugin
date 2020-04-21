@@ -2,9 +2,20 @@
 [![mybatis-log-plugin](https://img.shields.io/jetbrains/plugin/d/10065-mybatis-log-plugin?style=flat-square)](https://plugins.jetbrains.com/plugin/10065-mybatis-log-plugin/versions)
 
 # MyBatis Log Plugin
-# 插件fork来自于MybatisLogPlugin,添加了sql点击执行，sql语法高亮功能
+
+# 插件fork来自于MybatisLogPlugin gpl协议时的代码,添加了sql点击执行，sql语法高亮功能
+
 有条件的请付费支持原作者 [mybatis-log-plugin](https://plugins.jetbrains.com/plugin/13905-mybatis-log-plugin) 
 
+## 插件目前不会发布到IDAE插件中心，请自行打包
+
+导入项目后 先修改build.gradle中的localPath为你的idea的路径 然后执行 gradle buildPlugin。
+ 
+截图:
+
+![console执行sql](https://raw.githubusercontent.com/gejun123456/mybatis-log-plugin/fromGplBranch/snapshot/addSqlLogSupport.gif)
+
+插件问题可以添加qq群:914051156
 
 ## Introduction
 - Restore mybatis sql log to original whole sql.
