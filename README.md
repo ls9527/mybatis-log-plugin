@@ -3,7 +3,7 @@
 
 # MyBatis Log Plugin
 
-# 插件fork来自于MybatisLogPlugin gpl协议时的代码,添加了sql点击执行，sql语法高亮功能
+# 插件fork来自于MybatisLogPlugin gpl协议时的代码,添加了sql点击执行，sql语法高亮功能，兼容idea最新版本
 
 有条件的请付费支持原作者 [mybatis-log-plugin](https://plugins.jetbrains.com/plugin/13905-mybatis-log-plugin) 
 
