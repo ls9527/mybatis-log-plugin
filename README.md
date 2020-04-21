@@ -2,6 +2,10 @@
 [![mybatis-log-plugin](https://img.shields.io/jetbrains/plugin/d/10065-mybatis-log-plugin?style=flat-square)](https://plugins.jetbrains.com/plugin/10065-mybatis-log-plugin/versions)
 
 # MyBatis Log Plugin
+# 插件fork来自于MybatisLogPlugin,添加了sql点击执行，sql语法高亮功能
+有条件的请付费支持原作者 [mybatis-log-plugin](https://plugins.jetbrains.com/plugin/13905-mybatis-log-plugin) 
+
+
 ## Introduction
 - Restore mybatis sql log to original whole sql.
 - It will generate executable sql statements with replace ? to the really param value.
@@ -61,6 +65,6 @@ https://github.com/kookob/mybatis-log-plugin/wiki/Plugin-Manual
 然后有看到官方marketplace启动不久，想着新插件发布上去体验下流程并试下效果。  
 所以目前新插件是收费状态，并且给它设定了一个最低的价格($1/year)。  
 如果你愿意体验并支持新的插件，请访问地址：  
-[mybatis-log-plugin](https://plugins.jetbrains.com/plugin/13905-mybatis-log-plugin)  
+
 后续可能会开发一些新的插件，希望各位能够理解并支持。  
 谢谢！

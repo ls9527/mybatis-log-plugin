@@ -5,7 +5,8 @@
     <vendor email="gejun123456@gmail.com" url="">gejun123456@gmail.com</vendor>
     <description>
     <![CDATA[
-      The plugin is forked from MyBatis Log Plugin, Add function for sql execute, Highlight.
+      The plugin is forked from MyBatis Log Plugin gpl license code, Add function for sql execute, Highlight.
+      插件来源于MybatisLogPlugin之前gpl协议的代码,添加了sql执行，sql语句高亮功能。
       <br/>
       -----------------------------------------------------------------------------------------------------------------------
       <br/>
@@ -19,26 +20,12 @@
       -----------------------------------------------------------------------------------------------------------------------
       <br/>
       把 mybatis 输出的sql日志还原成完整的sql语句。<br/>
-      将日志输出的sql语句中的问号 ? 替换成真正的参数值。<br/>
-      通过 "Tools -> MyBatisCodeHelperLogPlugin" 菜单或快捷键 "Ctrl+Shift+Alt+M" 启用。<br/>
-      选中console的sql日志，右击 "Restore Sql from Selection" 菜单可以还原sql语句。<br/>
-      前提条件：输出的sql日志必须包含"Preparing:"和"Parameters:"才能正常解析。<br/>
-      <br/>
-      <a href="https://github.com/kookob/mybatis-log-plugin">Github</a> | <a href="https://github.com/kookob/mybatis-log-plugin/issues">Issues</a><br/>
-      <br/>
-      Donate: <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=2FQY2FH24H4LC&item_name=MyBatis+Log+Plugin&currency_code=USD&source=url">PayPal</a>
-      | <a href="https://github.com/kookob/mybatis-log-plugin/blob/master/DONATE.md">支付宝&微信</a><br/>
-      <br/>
-      <img src="https://plugins.jetbrains.com/files/10065/screenshot_17367.png" />
+
     ]]>
     </description>
 
     <change-notes>
-    <![CDATA[
-        <a href="https://github.com/kookob/mybatis-log-plugin/wiki/change-notes">change notes</a>
-        <br/>
-        <a href="https://github.com/kookob/mybatis-log-plugin/wiki/更新日志">更新日志</a>
-    ]]>
+       添加console中的sql直接点击执行，Intellij高级版解析出的sql有语法高亮
     </change-notes>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
