@@ -7,7 +7,7 @@
 
 有条件的请付费支持原作者 [mybatis-log-plugin](https://plugins.jetbrains.com/plugin/13905-mybatis-log-plugin) 
 
-## 插件目前不会发布到IDAE插件中心，请自行打包
+## 插件目前不会发布到IDEA插件中心，请自行打包
 
 导入项目后 先修改build.gradle中的localPath为你的idea的路径 然后执行 gradle buildPlugin。
  
