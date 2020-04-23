@@ -1,16 +1,8 @@
 package mybatis.mylog;
 
-import kotlin.text.Charsets;
-import mybatis.mylog.action.MybatisLogProjectService;
-import mybatis.mylog.action.gui.MySqlForm;
-import mybatis.mylog.util.ConfigUtil;
-import mybatis.mylog.util.PrintUtil;
-import mybatis.mylog.util.RestoreSqlUtil;
-import mybatis.mylog.util.StringConst;
 import com.intellij.codeInsight.CodeInsightUtil;
 import com.intellij.execution.filters.Filter;
 import com.intellij.execution.filters.HyperlinkInfo;
-import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.editor.Document;
@@ -23,11 +15,16 @@ import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
+import mybatis.mylog.action.MybatisLogProjectService;
+import mybatis.mylog.action.gui.MySqlForm;
+import mybatis.mylog.util.ConfigUtil;
+import mybatis.mylog.util.PrintUtil;
+import mybatis.mylog.util.RestoreSqlUtil;
+import mybatis.mylog.util.StringConst;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.nio.charset.Charset;
 import java.util.List;
 
 /**
@@ -53,13 +50,8 @@ public class MyBatisLogFilter implements Filter {
         if(this.project == null) return null;
         if(ConfigUtil.getRunning(project)) {
             //过滤不显示的语句
-            String[] filters = PropertiesComponent.getInstance(project).getValues(StringConst.FILTER_KEY);
-            if (filters != null && filters.length > 0 && StringUtils.isNotBlank(currentLine)) {
-                for (String filter : filters) {
-                    if(StringUtils.isNotBlank(filter) && currentLine.toLowerCase().contains(filter.trim().toLowerCase())) {
-                        return null;
-                    }
-                }
+            if (StringUtils.isBlank(currentLine)) {
+                return null;
             }
             if(currentLine.contains(ConfigUtil.getPreparing(project))) {
                 preparingLine = currentLine;
