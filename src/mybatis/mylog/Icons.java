@@ -12,6 +12,6 @@ public class Icons {
     public static final Icon MyBatisIcon = IconLoader.getIcon("/icons/mybatis_small.png");
 //    public static final Icon FilterIcon = IconLoader.getIcon("/mybatis/mylog/icon/filter.png");
 //    public static final Icon FormatIcon = IconLoader.getIcon("/mybatis/mylog/icon/format.png");
-    public static final Icon TextIcon = IconLoader.getIcon("/mybatis/mylog/icon/text.png");
+//    public static final Icon TextIcon = IconLoader.getIcon("/mybatis/mylog/icon/text.png");
 //    public static final Icon DisabledRunIcon = IconLoader.getIcon("/mybatis/mylog/icon/disabledRun.png");
 }

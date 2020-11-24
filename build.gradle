@@ -1,10 +1,10 @@
 
 buildscript {
-    ext.kotlin_version = '1.2.20'
+    ext.kotlin_version = '1.3.72'
     ext.myPluginName = 'MybatisCodeHelperLogPlugin'
 
     //162 181 183 172 171 173 191
-    ext.ideaVersion = 201
+    ext.ideaVersion = 183
 
     repositories {
         mavenCentral()
@@ -62,8 +62,6 @@ intellij {
     } else if(ideaVersion == 191){
         version 'IU-2019.1'
 //        version 'IU-2019.1.2'
-    } else if(ideaVersion==201){
-        localPath 'F:\\jetbrainIdeInstall\\apps\\IDEA-U\\ch-0\\201.6668.121'
     }
 //    plugins 'coverage' //Bundled plugin dependencies
     pluginName "${myPluginName}"
@@ -108,10 +106,7 @@ compileTestKotlin {
 }
 
 group 'org.jetbrains'
-
-
-
-    version '1.0-SNAPSHOT' // Plugin version
+version '1.0-SNAPSHOT' // Plugin version
 
 
 

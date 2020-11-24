@@ -62,18 +62,18 @@ public class RestoreSqlUtil {
         String restoreSql = "";
         String preparingSql = "";
         String parametersSql = "";
-        final String PREPARING = ConfigUtil.getPreparing(project);
-        final String PARAMETERS = ConfigUtil.getParameters(project);
+        final String preparing = ConfigUtil.getPreparing(project);
+        final String parameters = ConfigUtil.getParameters(project);
         try {
-            if(preparingLine.contains(PREPARING)) {
-                preparingSql = preparingLine.split(PREPARING)[1].trim();
+            if(preparingLine.contains(preparing)) {
+                preparingSql = preparingLine.split(preparing)[1].trim();
             } else {
                 preparingSql = preparingLine;
             }
             boolean hasParam = false;
-            if(parametersLine.contains(PARAMETERS)) {
-                if(parametersLine.split(PARAMETERS).length > 1) {
-                    parametersSql = parametersLine.split(PARAMETERS)[1];
+            if(parametersLine.contains(parameters)) {
+                if(parametersLine.split(parameters).length > 1) {
+                    parametersSql = parametersLine.split(parameters)[1];
                     if(StringUtils.isNotBlank(parametersSql)) {
                         hasParam = true;
                     }

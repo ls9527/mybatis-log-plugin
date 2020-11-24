@@ -28,14 +28,17 @@ public class MybatisLogToolWindow implements ToolWindowFactory {
         toolWindow.setAutoHide(true);
     }
 
+    @Override
     public void init(ToolWindow window) {
         window.setIcon(Icons.MyBatisIcon);
     }
 
+    @Override
     public boolean shouldBeAvailable(@NotNull Project project) {
         return true;
     }
 
+    @Override
     public boolean isDoNotActivateOnStart() {
         return false;
     }
